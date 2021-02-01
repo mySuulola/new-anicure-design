@@ -18,6 +18,7 @@ interface IAnicureTextInput {
     fieldValue: any,
     maxLength?: number,
     secureTextEntry?: boolean
+    width?: any,
 }
 
 const AnicureTextInput = ({
@@ -31,13 +32,14 @@ const AnicureTextInput = ({
     autoFocus,
     keyboardType,
     maxLength,
-    secureTextEntry
+    secureTextEntry,
+    width,
 }: IAnicureTextInput) => {
 
     const [isValid, setIsValid] = useState(false)
     return (
         <>
-            <View style={styles.container}>
+            <View style={[styles.container, {width: width ?? "80%"}]}>
                 {decoratorIcon && <Icon
                     name={decoratorIcon}
                     size={25}
@@ -85,11 +87,10 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#fff",
         borderWidth: 1,
-        borderColor: "#E5E5E5",
+        borderColor: "#707070",
         borderRadius: 12,
         alignItems: 'center',
         flexDirection: 'row',
-        width: '80%',
         paddingHorizontal: 7,
     },
     px7: {

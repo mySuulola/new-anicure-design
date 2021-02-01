@@ -5,6 +5,7 @@ import AnicureImage from '../../components/AnicureImage'
 import AnicureText from '../../components/AnicureText'
 import Appbar from '../../components/Appbar'
 import AnicureTextInput from '../../components/TextInput'
+import commonStyling from '../../styles/GeneralStyling';
 
 const VerifyPhoneNumber = ({ navigation, route }: any) => {
 
@@ -20,7 +21,7 @@ const VerifyPhoneNumber = ({ navigation, route }: any) => {
     // }, [input])
 
     return (
-        <View style={{ flex: 1, alignItems: "center" }}>
+        <View style={commonStyling.registrationContainer}>
             <Appbar navigation={navigation} back={true} title="Step 1/3" />
             <AnicureImage
                 imageSource={require("../../assets/svg/verification.png")}
@@ -41,19 +42,16 @@ const VerifyPhoneNumber = ({ navigation, route }: any) => {
                 text={phoneNumber}
                 type="subTitle"
             />
-            <View style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
+            <View style={commonStyling.cardContainer}>
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={{ width: "100%", alignItems: "center", backgroundColor: "#fff", paddingVertical: 40, paddingHorizontal: 10, borderRadius: 10 }}>
+                    style={commonStyling.registrationWhiteSheet}>
                     <AnicureTextInput
                         fieldValue={OTP}
                         setFieldState={setOTP}
-                        rules={{ type: "match", minLength: 6, value: OTPValue }}
+                        rules={{ type: "match", minLength: 5, value: OTPValue }}
                         validation={true}
+                        width={"100%"}
                         maxLength={6}
                         keyboardType="numeric"
                         decoratorIcon="cellphone-message"
@@ -61,19 +59,18 @@ const VerifyPhoneNumber = ({ navigation, route }: any) => {
                         autoFocus={true}
                     />
                     <AnicureButton
-                        otherStyles={{ marginTop: 30 }}
+                        otherStyles={commonStyling.continueButton}
                         title="Continue"
                         onPress={() => navigation.navigate("AddProfileDetails")}
                         width={250}
                     />
                 </KeyboardAvoidingView>
                 <AnicureText
-                    text={"Resend Code in 5:00"}
+                    text={"Resend Code in 0:20"}
                     type="subTitle"
-                    otherStyles={{marginTop: 20}}
+                    otherStyles={{marginTop: 20, color: "#1F1742", fontFamily: "Roboto-Medium"}}
                 />
             </View>
-
         </View>
     )
 }

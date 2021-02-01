@@ -30,7 +30,10 @@ const startingProcess = [
 const CreateAccount = ({ navigation }: any) => {
     return (
         <ScrollView style={styles.container}>
-            <Appbar navigation={navigation} back={true} />
+            <Appbar 
+            navigation={navigation} 
+            back={true} 
+            />
             <AnicureText
                 text="Let's Get Started"
                 type="title"

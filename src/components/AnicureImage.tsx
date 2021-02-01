@@ -5,13 +5,15 @@ interface IAnicureImage {
     imageSource: any,
     desc: string,
     margin?: boolean,
+    otherImageStyle?: any,
+    otherContainerStyle?: any,
 }
 
-const AnicureImage = ({ imageSource, desc, margin }: IAnicureImage) => {
+const AnicureImage = ({ imageSource, desc, margin, otherImageStyle, otherContainerStyle }: IAnicureImage) => {
     return (
-        <View style={[styles.container, { marginVertical: margin ? 20 : 0 }]}>
+        <View style={[styles.container, { marginVertical: margin ? 20 : 0 }, otherContainerStyle]}>
             <Image
-                style={styles.image}
+                style={[styles.image, otherImageStyle]}
                 accessibilityLabel={desc}
                 resizeMode="contain"
                 source={imageSource}

@@ -37,7 +37,7 @@ const AnicureButton = ({
             alignItems: "center" }, otherStyles]}>
         <Text style={{
           color: textColor ? textColor : textBtn ? "#216B36" : "#FFFFFF",
-          fontSize: fontSize ?? 17,
+          fontSize: fontSize ?? 14,
           fontFamily: textBtn ? "Roboto-Medium" :"Roboto-Regular" ,
           // fontWeight: boldText === false ? "normal" : "bold",
         }} >{title}</Text>

@@ -1,91 +1,116 @@
-import React, { useState, useEffect } from 'react'
-import { ScrollView, Platform, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native'
 import AnicureButton from '../../components/AnicureButton'
 import AnicureImage from '../../components/AnicureImage'
 import AnicureText from '../../components/AnicureText'
 import Appbar from '../../components/Appbar'
-import AnicureTextInput from '../../components/TextInput'
+import FormInput from '../../components/FormInput'
+import { APP_GREEN } from '../../utils/constant'
+import { passwordValidation, emailValidation, confirmPasswordValidation, fullNameValidation } from '../../utils/validation'
+import commonStyling from '../../styles/GeneralStyling';
 
 const AddProfileDetails = ({ navigation }: any) => {
 
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [cPassword, setCPassword] = useState("");
+    const [fullName, setFullName] = useState({ value: "", error: "" });
+    const [email, setEmail] = useState({ value: "", error: "" });
+    const [password, setPassword] = useState({ value: "", error: "" });
+    const [confirmPassword, setConfirmPassword] = useState({ value: "", error: "" });
+    const [isLoading, setIsLoading] = useState(false);
 
+    const handleRegistration = async () => {
+        setIsLoading(true);
+
+        // VALIDATIONS
+        const emailError = emailValidation(email, setEmail);
+        const passwordError = passwordValidation(password, setPassword);
+        const confirmPasswordError = confirmPasswordValidation(password.value, confirmPassword, setConfirmPassword);
+        const fullNameError = fullNameValidation(fullName, setFullName);
+
+        if (emailError || passwordError || confirmPasswordError || fullNameError) {
+            setIsLoading(false)
+            return;
+        }
+        //TODO: API to register user and send OTP
+        setIsLoading(false)
+        navigation.push("CreateFarm")
+    };
 
     return (
-        <View style={{ flex: 1, alignItems: "center" }}>
+        <View style={{flex: 1}}>
             <Appbar navigation={navigation} back={true} title="Step 2/3" />
-            <AnicureImage
-                imageSource={require("../../assets/svg/profile.png")}
-                desc={"profile"}
-                margin={true}
-            />
-            <AnicureText
-                text="Add Profile Details"
-                type="subTitle"
-            />
-
-            <AnicureText
-                text="Fill in your personal details"
-                type="subTitle"
-                otherStyles={{ fontWeight: "normal", paddingHorizontal: 40 }}
-            />
-
-            <ScrollView style={{
-                flex: 1,
-                width: "100%"
-                
-            }}>
-                <View
-                    style={{ justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%", backgroundColor: "#fff", paddingVertical: 40, borderRadius: 10 }}>
-                    <AnicureText text="Full Name" type="subTitle" otherStyles={{ fontSize: 20, fontWeight: "normal" }} />
-                    <AnicureTextInput
-                        fieldValue={fullName}
-                        setFieldState={setFullName}
-                        validation={false}
-                        keyboardType="default"
+            <ScrollView>
+                <View style={commonStyling.registrationContainer} >
+                    <AnicureImage
+                        imageSource={require("../../assets/svg/profile.png")}
+                        desc={"profile"}
+                        margin={true}
+                    />
+                    <AnicureText
+                        text="Add Profile Details"
+                        type="subTitle"
+                        otherStyles={{ color: "#1F1742", fontFamily: "Roboto-Bold", fontSize: 14 }}
                     />
 
-                    <AnicureText text="Email Address" type="subTitle" otherStyles={{ fontSize: 20, fontWeight: "normal" }} />
-                    <AnicureTextInput
-                        fieldValue={email}
-                        setFieldState={setEmail}
-                        validation={false}
-                        keyboardType="email-address"
+                    <AnicureText
+                        text="Fill in your personal details"
+                        type="subTitle"
                     />
 
-                    <AnicureText text="Password" type="subTitle" otherStyles={{ fontSize: 20, fontWeight: "normal" }} />
-                    <AnicureTextInput
-                        fieldValue={password}
-                        setFieldState={setPassword}
-                        validation={false}
-                        keyboardType="default"
-                        secureTextEntry={true}
-                    />
+                    <View style={commonStyling.cardContainer}>
+                        <View style={commonStyling.registrationWhiteSheet}>
+                            <FormInput
+                                labelName="Full Name"
+                                value={fullName.value}
+                                error={fullName.error}
+                                autoCapitalize="none"
+                                onChangeText={(name: string) => setFullName({ value: name, error: fullName.error })}
+                            />
+                            <FormInput
+                                labelName="Email Address"
+                                value={email.value}
+                                error={email.error}
+                                autoCapitalize="none"
+                                keyboardType="email-address"
+                                onChangeText={(name: string) => setEmail({ value: name, error: email.error })}
+                            />
 
-                    <AnicureText text="Confirm Password" type="subTitle" otherStyles={{ fontSize: 20, fontWeight: "normal" }} />
-                    <AnicureTextInput
-                        fieldValue={cPassword}
-                        setFieldState={setCPassword}
-                        validation={false}
-                        secureTextEntry={true}
-                        keyboardType="default"
-                    />
-                    <AnicureButton
-                        otherStyles={{ marginTop: 30 }}
-                        title="Continue"
-                        onPress={() => { }}
-                        width={250}
-                    />
+                            <FormInput
+                                labelName="Password"
+                                icon="password"
+                                value={password.value}
+                                error={password.error}
+                                secureTextEntry={true}
+                                onChangeText={(userPassword: string) => setPassword({ value: userPassword, error: password.error })}
+                            />
+
+                            <FormInput
+                                labelName="Re-enter Password"
+                                icon="password"
+                                value={confirmPassword.value}
+                                error={confirmPassword.error}
+                                secureTextEntry={true}
+                                onChangeText={(userPassword: string) => setConfirmPassword({ value: userPassword, error: confirmPassword.error })}
+                            />
+
+                            {(isLoading == false) ? (
+                                <AnicureButton
+                                    otherStyles={{ marginTop: 40 }}
+                                    title="Continue"
+                                    onPress={handleRegistration}
+                                    width={"100%"}
+                                />
+                            ) : (
+                                    <ActivityIndicator
+                                        size="large"
+                                        color={APP_GREEN}
+                                    />
+                                )}
+                        </View>
+                    </View>
                 </View>
-                
             </ScrollView>
-
         </View>
+
     )
 }
 

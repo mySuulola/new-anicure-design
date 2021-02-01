@@ -95,7 +95,7 @@ const FormInput = ({
           )}
       </View>
       <Text style={styles.errorText}>{error}</Text>
-    </View>
+      </View>
   );
 };
 
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontFamily: "Roboto-Regular",
-    color: "red",
-    marginBottom: 4,
+    color: "#1F1742",
+    marginBottom: 6,
   },
   textContainer: {
     flexDirection: "row",
@@ -135,7 +135,8 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontWeight: "100",
-    fontFamily: "Roboto-Italic"
+    fontFamily: "Roboto-Italic",
+    marginBottom: 10,
   },
   passwordImage: {
     width: 20,

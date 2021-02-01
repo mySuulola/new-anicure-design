@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   StyleSheet,
   Dimensions,
-  Text,
   View,
   Image,
 } from 'react-native';
@@ -10,8 +9,9 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 import AnicureButton from '../../components/AnicureButton';
 import AnicureText from '../../components/AnicureText';
 import IntroAction from '../../components/IntroAction';
+import Loader from '../../components/Loader';
 
-const { height, width } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
 
 const slides = [
   {
@@ -37,7 +37,7 @@ const slides = [
   }
 ];
 
-const AppIntro = ({ navigation }) => {
+const AppIntro = ({ navigation }: any) => {
   const [showRealApp, setShowRealApp] = useState(false);
 
   const onDone = () => {
@@ -47,7 +47,7 @@ const AppIntro = ({ navigation }) => {
     navigation.navigate("Login")
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item } : any) => {
     return (
       <View style={styles.slide}>
         <AnicureButton
@@ -81,7 +81,7 @@ const AppIntro = ({ navigation }) => {
 
 
   if (showRealApp) {
-    return <View><Text></Text></View>
+    return <Loader />
   } else {
     return (
       <AppIntroSlider
@@ -105,7 +105,10 @@ export default AppIntro;
 
 const styles = StyleSheet.create({
   slide: {
-    flex: 1,
+    // flex: 1,
+    width: "100%",
+    height: "70%",
+    alignItems: "flex-start",
     paddingHorizontal: 20,
     backgroundColor: "#F4F4F4"
   },

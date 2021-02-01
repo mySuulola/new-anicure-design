@@ -18,7 +18,7 @@ const AnicureText = ({ type, text, otherStyles } : IAnicureText) => {
 const styles = StyleSheet.create({
   title: {
     fontSize: 25,
-    marginVertical: 10,
+    // marginVertical: 10,
     color: "#1F1742",
     textAlign: 'center',
     fontFamily: "Roboto-Bold",

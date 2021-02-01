@@ -1,5 +1,5 @@
 import {
-  USER_AUTHENTICATION,
+  UPDATE_USER_DETAIL,
   USER_LOGOUT,
   UPDATE_USER_PLAN,
   REGISTER_USER
@@ -15,33 +15,11 @@ const userReducer = (state = initialUserState, action) => {
   console.log(action)
   console.log('----------------')
   switch (action.type) {
-    case USER_AUTHENTICATION:
+    case UPDATE_USER_DETAIL:
       return {
         ...state,
         loggedIn: true,
-        userDetail: {
-          ...state.userDetail,
-          userDetail:{...action.payload},
-        },
-      };
-    case UPDATE_USER_PLAN:
-      return {
-        ...state,
-        loggedIn: true,
-        userDetail: {
-          ...state.userDetail,
-          userDetail:{...state.userDetail.userDetail, plan: action.payload.plan},
-        },
-      };
-    case REGISTER_USER:
-      console.log('REGISTER_USER')
-      return {
-        ...state,
-        loggedIn: true,
-        userDetail:{
-          ...state.userDetail,
-          userDetail:{...action.payload},        
-        },
+        userDetail: action.payload
       };
     case USER_LOGOUT:
       return {

@@ -8,11 +8,13 @@ const IntroAction = ({onDone, handleLogin}: any) => {
             <AnicureButton
               onPress={onDone}
               title="Get Started"
+              fontSize={17}
             />
             <AnicureButton
               onPress={handleLogin}
               title="Login to Account"
               textBtn={true}
+              fontSize={17}
             />
           </View>
     )
