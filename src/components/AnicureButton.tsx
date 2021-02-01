@@ -13,21 +13,33 @@ interface IAnicureButton {
     fontSize ?: number,
 }
 
-const AnicureButton = ({title, onPress, textColor, btnColor, width, textBtn, boldText, otherStyles, fontSize } : IAnicureButton) => {
+const AnicureButton = ({
+  title, 
+  onPress, 
+  textColor, 
+  btnColor, 
+  width, 
+  textBtn, 
+  otherStyles, 
+  fontSize 
+} : IAnicureButton) => {
     return (
         <TouchableOpacity
         onPress={onPress}
         style={[{ 
             width: width ?? '100%', 
-            backgroundColor: btnColor ?? textBtn ? "transparent" : "green", 
+            height: 50,
+            justifyContent: "center",
+            backgroundColor: btnColor ?? textBtn ? "transparent" : "#216B36", 
             paddingVertical: 12, 
-            marginTop: 10,
-            borderRadius: textBtn ? 0 : 10, 
+            // marginTop: 10,
+            borderRadius: textBtn ? 0 : 15, 
             alignItems: "center" }, otherStyles]}>
         <Text style={{
-          color: textColor ? textColor : textBtn ? "green" : "#fff",
-          fontSize: fontSize ?? 18,
-          fontWeight: boldText === false ? "normal" : "bold",
+          color: textColor ? textColor : textBtn ? "#216B36" : "#FFFFFF",
+          fontSize: fontSize ?? 17,
+          fontFamily: textBtn ? "Roboto-Medium" :"Roboto-Regular" ,
+          // fontWeight: boldText === false ? "normal" : "bold",
         }} >{title}</Text>
       </TouchableOpacity>
     )

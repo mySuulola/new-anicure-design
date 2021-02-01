@@ -23,16 +23,18 @@ const AnicureImage = ({ imageSource, desc, margin }: IAnicureImage) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#6bea8140',
-        width: 100,
-        height: 100,
+        width: 90,
+        height: 90,
         padding: 20,
         borderRadius: 50,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        overflow: "hidden"
     },
     image: {
-        width: 70,
-        height: 70
+        width: 60,
+        height: 60
+
     },
 })
 

@@ -9,6 +9,7 @@ import {
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AnicureButton from '../../components/AnicureButton';
 import AnicureText from '../../components/AnicureText';
+import IntroAction from '../../components/IntroAction';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -50,18 +51,28 @@ const AppIntro = ({ navigation }) => {
     return (
       <View style={styles.slide}>
         <AnicureButton
-          onPress={() => onDone()}
+          onPress={handleLogin}
           title={"Skip"}
-          otherStyles={{ alignItems: 'flex-end' }}
+          otherStyles={{ alignItems: 'flex-end'}}
           boldText={true}
           textBtn={true}
-          fontSize={16}
-          textColor="#000"
+          fontSize={15}
+          textColor="#1F1742"
         />
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Image resizeMode="contain" style={styles.image} source={item.image} />
-          <AnicureText text={item.title} type="title" />
-          <AnicureText text={item.text} type="subTitle" />
+        <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+          <Image 
+          resizeMode="contain" 
+          style={styles.image} 
+          source={item.image} 
+          />
+          <AnicureText
+            text={item.title}
+            type="title"
+          />
+          <AnicureText
+            text={item.text}
+            type="subTitle"
+          />
         </View>
       </View>
     );
@@ -76,35 +87,14 @@ const AppIntro = ({ navigation }) => {
       <AppIntroSlider
         renderItem={renderItem}
         data={slides}
-        renderNextButton={() => (
-          <View>
-            <AnicureButton
-              onPress={onDone}
-              title="Get Started"
-            />
-            <AnicureButton
-              onPress={onDone}
-              title="Login to Account"
-              textBtn={true}
-            />
-          </View>
-        )}
+        renderNextButton={() => <IntroAction onDone={onDone} handleLogin={handleLogin} /> }
         bottomButton={true}
-        renderDoneButton={() => (
-          <View>
-            <AnicureButton
-              onPress={onDone}
-              title="Create Account"
-            />
-            <AnicureButton
-              onPress={onDone}
-              title="Login to Account"
-              textBtn={true}
-            />
-          </View>
-        )}
+        renderDoneButton={() => <IntroAction onDone={onDone} handleLogin={handleLogin} />}
         activeDotStyle={{
-          backgroundColor: "green"
+          backgroundColor: "#216B36",
+        }}
+        dotStyle={{
+          backgroundColor: "#BAB9C0"
         }}
       />
     );
@@ -115,10 +105,9 @@ export default AppIntro;
 
 const styles = StyleSheet.create({
   slide: {
-    minHeight: height - 280,
+    flex: 1,
     paddingHorizontal: 20,
-    alignItems: "flex-end",
-    justifyContent: "space-between",
+    backgroundColor: "#F4F4F4"
   },
   image: {
     marginBottom: 10,

@@ -21,7 +21,7 @@ const App = () => {
     SplashScreen.hide();
   }, [])
   return (
-    <View style={{ flex: 1, backgroundColor: "#ececec" }}>
+    <View style={{ flex: 1, backgroundColor: "#F4F4F4" }}>
       <View style={{ paddingTop: Platform.OS === "ios" ? 60 : 0 }} />
       <StatusBar barStyle="light-content" />
       <Providers />

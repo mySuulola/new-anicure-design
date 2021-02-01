@@ -34,14 +34,14 @@ const CreateAccount = ({ navigation }: any) => {
             <AnicureText
                 text="Let's Get Started"
                 type="title"
-                otherStyles={{ color: "green" }}
+                otherStyles={{ color: "#1F1742" }}
             />
             <AnicureText
                 text="To create a new account you need to follow the 3 easy steps"
                 type="subTitle"
-                otherStyles={{ paddingHorizontal: 20 }}
+                // otherStyles={{ paddingHorizontal: 20 }}
             />
-            <View style={{ borderRadius: 10, backgroundColor: "#fff", marginHorizontal: 10, paddingVertical: 20 }}>
+            <View style={{ borderRadius: 10, backgroundColor: "#FFFFFF", marginHorizontal: 10, marginTop: 20, paddingVertical: 20, marginBottom: 20 }}>
                 {startingProcess.map(detail => (
                     <StartedRow
                         key={detail.text}
@@ -67,6 +67,6 @@ export default CreateAccount
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
     }
 })

@@ -14,21 +14,21 @@ const StartedRow = ({ imageSource, text, top, bottom }: IStartedRow) => {
     return (
         <View style={styles.container}>
             <View style={{ alignItems: "center" }}>
-                {top && (<>
-                    <View style={styles.ellipse} />
-                    <View style={styles.ellipse} />
-                </>)}
+                <>
+                    <View style={[styles.ellipse, { backgroundColor: top ? "#6bea81a8" : "transparent" }]} />
+                    <View style={[styles.ellipse, { backgroundColor: top ? "#6bea81a8" : "transparent" }]} />
+                </>
                 <AnicureImage imageSource={imageSource} desc={text} />
-                {bottom && <>
-                    <View style={styles.ellipse} />
-                    <View style={styles.ellipse} />
-                </>}
+                <>
+                    <View style={[styles.ellipse, { backgroundColor: bottom ? "#6bea81a8" : "transparent" }]} />
+                    <View style={[styles.ellipse, { backgroundColor: bottom ? "#6bea81a8" : "transparent" }]} />
+                </>
             </View>
             <View style={styles.textContainer}>
-                <AnicureText 
-                otherStyles={{fontSize: 14, }}
-                text={text} 
-                type="subTitle" 
+                <AnicureText
+                    otherStyles={{ fontSize: 14, color: "#1F1742", fontFamily: "Roboto-Bold" }}
+                    text={text}
+                    type="subTitle"
                 />
             </View>
         </View>
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     ellipse: {
-        width: 7,
-        height: 7,
+        width: 2,
+        height: 5,
         backgroundColor: "#6bea81a8",
         borderRadius: 50,
         marginBottom: 3,

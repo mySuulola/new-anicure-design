@@ -1,7 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { StyleSheet, TouchableOpacity, Image, Text, View } from 'react-native'
 
 interface IAppBar {
     navigation?: any,
@@ -15,18 +13,24 @@ const Appbar = ({ navigation, back, title, trailingText, margin }: IAppBar) => {
     return (
         <View style={[styles.row, styles.container]}>
             <View style={styles.row}>
-                {(back && navigation) && 
-                <TouchableOpacity
-                    style={[styles.ml, { marginBottom: margin ? 20 : 0 }]}
-                    onPress={() => navigation.goBack()}>
-                    <MaterialCommunityIcon 
-                    name="arrow-left" 
-                    size={30} 
-                    color={"#000"} 
-                    />
-                </TouchableOpacity>}
-                {title && <Text 
-                style={{ fontSize: 20, fontWeight: "bold", flex: 1, textAlign: "center", color: "green" }}>{title}</Text>
+                {(back && navigation) &&
+                    <TouchableOpacity
+                        style={[styles.ml, { marginBottom: margin ? 20 : 0 }]}
+                        onPress={() => navigation.goBack()}>
+                        <Image
+                            source={require("../assets/svg/back_arrow.png")}
+                            style={{ width: 15, height: 13, }}
+                        />
+                    </TouchableOpacity>}
+                {title && <Text
+                    style={{ 
+                        fontSize: 15,
+                        fontFamily: "Roboto-Bold",
+                        flex: 1, 
+                        textAlign: "center", 
+                        marginRight: 20,
+                        color: "#216B36" 
+                    }}>{title}</Text>
                 }
             </View>
             <View>
@@ -49,7 +53,9 @@ const styles = StyleSheet.create({
         justifyContent: "space-between"
     },
     ml: {
-        paddingRight: 10,
-        paddingLeft: 7
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        paddingBottom: 30
+        
     }
 })

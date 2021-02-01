@@ -1,5 +1,6 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/public/LoginScreen';
 import AppIntro from '../screens/public/AppIntro';
 import TipsScreen from '../screens/public/TipsScreen';
@@ -15,18 +16,21 @@ const Stack = createStackNavigator();
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Intro" headerMode="none">
-      <Stack.Screen name="Intro" component={AppIntro} />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="CreateAccount" component={CreateAccount} />
-      <Stack.Screen name="AddProfileDetails" component={AddProfileDetails} />
-      <Stack.Screen name="CreateFarm" component={CreateFarm} />
-      <Stack.Screen name="RegisterPhoneNumber" component={RegisterPhoneNumber} />
-      <Stack.Screen name="VerifyPhoneNumber" component={VerifyPhoneNumber} />
-      <Stack.Screen name="Tips" component={TipsScreen} />
-      <Stack.Screen name="TipsDetail" component={TipsDetailScreen} />
-      <Stack.Screen name="Website" component={WebsiteScreen} />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Intro" headerMode="none">
+        <Stack.Screen name="Intro" component={AppIntro} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="CreateAccount" component={CreateAccount} />
+        <Stack.Screen name="AddProfileDetails" component={AddProfileDetails} />
+        <Stack.Screen name="CreateFarm" component={CreateFarm} />
+        <Stack.Screen name="RegisterPhoneNumber" component={RegisterPhoneNumber} />
+        <Stack.Screen name="VerifyPhoneNumber" component={VerifyPhoneNumber} />
+        <Stack.Screen name="Tips" component={TipsScreen} />
+        <Stack.Screen name="TipsDetail" component={TipsDetailScreen} />
+        <Stack.Screen name="Website" component={WebsiteScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+
   );
 };
 
