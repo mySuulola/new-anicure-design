@@ -17,6 +17,9 @@ import FeedbackScreen from '../screens/protected/FeedbackScreen';
 import TipsDetailScreen from '../screens/public/TipsDetailScreen';
 import BillingScreen from '../screens/tabs/BillingScreen';
 import TabBar from './TabBar';
+import More from '../screens/tabs/More';
+import Appointment from '../screens/tabs/Appointment';
+import Search from '../screens/tabs/Search';
 
 
 const Tab = createBottomTabNavigator();
@@ -28,12 +31,12 @@ const TabNavigator = () => {
         tabBar={props => <TabBar {...props} />}
         initialRouteName="Home">
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Vaccination" component={VaccinationScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Search" component={Search} />
+        <Tab.Screen name="Appointment" component={Appointment} />
+        <Tab.Screen name="More" component={More} />
       </Tab.Navigator>
   )
 }
-
 
 const UserTab = () => {
   return (

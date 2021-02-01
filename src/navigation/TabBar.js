@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AnicureText from '../components/AnicureText';
 
 
 const TabBar = ({ state, descriptors, navigation }) => {
@@ -10,13 +11,12 @@ const TabBar = ({ state, descriptors, navigation }) => {
                 const { options } = descriptors[route.key];
                 let iconName;
                 route.name === 'Home' ?
-                    iconName = 'home' :
-                    route.name === 'Notification' ?
-                        iconName = 'bell' :
-                        route.name === 'Cart' ?
-                            iconName = 'heart' :
-                            route.name === 'Profile' ?
-                                iconName = 'account' : null;
+                    iconName = 'waveform' :
+                    route.name === 'Search' ?
+                        iconName = 'text-search' :
+                        route.name === 'Appointment' ?
+                            iconName = 'home' :
+                                iconName = 'dots-horizontal-circle-outline';
 
                 const isFocused = state.index === index;
 
@@ -40,8 +40,14 @@ const TabBar = ({ state, descriptors, navigation }) => {
                         testID={options.tabBarTestID}
                         onPress={onPress}
                         onLongPress={onPress}
+                        style={{alignItems: "center"}}
                     >
-                        <Icon name={iconName} size={24} color={isFocused ? '#8AC760' : '#8d8989e6'} />
+                        <Icon name={iconName} size={24} color={isFocused ? '#216B36' : '#8d8989e6'} />
+                        <AnicureText 
+                        text={route.name === "Home" ? "Activities" : route.name}
+                        type="subTitle"
+                        otherStyles={{ color: isFocused ? '#216B36' : '#8d8989e6', fontFamily: "Roboto-Medium" }}
+                        />
                     </TouchableOpacity>
                 );
             })}
@@ -52,13 +58,13 @@ const TabBar = ({ state, descriptors, navigation }) => {
 const styles = StyleSheet.create({
     tabContainer: {
       flexDirection: 'row', 
-      backgroundColor: '#ffffff', 
+      backgroundColor: '#F4F4F4', 
       height: 60, 
       justifyContent: 'space-around', 
       alignItems: 'center', 
-      marginBottom: 10, 
-      marginHorizontal: 10, 
-      borderRadius: 20, 
+    //   marginBottom: 10, 
+    //   marginHorizontal: 10, 
+    //   borderRadius: 20, 
       shadowColor: '#000',
       shadowOffset: { 
         width: 0, 

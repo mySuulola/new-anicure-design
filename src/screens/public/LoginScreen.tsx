@@ -5,35 +5,43 @@ import {
   View,
   Image,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import FormInput from '../../components/FormInput';
 import { connect } from 'react-redux';
-import { userLogin } from '../../store/actions/userAction';
+import { updateUserDetail } from '../../store/actions/userAction';
 
 import Appbar from '../../components/Appbar';
 import AnicureText from '../../components/AnicureText';
 import AnicureButton from '../../components/AnicureButton';
+import { emailValidation, passwordValidation } from '../../utils/validation';
+import { APP_GREEN } from '../../utils/constant';
 
 const { height, width } = Dimensions.get('screen');
 
-const LoginScreen = ({ navigation, userLogin }: any) => {
+const LoginScreen = ({ navigation, updateUserDetail }: any) => {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [isLoading, setIsLoading] = useState(false);
 
 
   const handleLogin = async () => {
-    if (email.value === "" || password.value === "") {
-      let error = "Enter a valid email and password"
+    setIsLoading(true)
+
+    const emailError = emailValidation(email, setEmail);
+    const passwordError = passwordValidation(password, setPassword);
+
+    if (emailError || passwordError) {
+      setIsLoading(false)
       return;
     }
-    setIsLoading(true)
-    await userLogin({ email, password });
-    setIsLoading(false);
+    // API
+    setIsLoading(false)
+    await updateUserDetail({ email, username: "" });
   };
 
   return (
-    <View style={[styles.scrollView]}>
+    <ScrollView contentContainerStyle={[styles.scrollView]}>
       <Appbar
         navigation={navigation}
         back={true}
@@ -49,7 +57,7 @@ const LoginScreen = ({ navigation, userLogin }: any) => {
         <AnicureText
           text="Login to your account"
           type="subTitle"
-          otherStyles={{ fontFamily: "Roboto-Medium", width: "100%", textAlign: "left", marginTop: 40, marginBottom: 20, paddingHorizontal: 20, fontSize: 15 }}
+          otherStyles={{ fontFamily: "Roboto-Medium", width: "100%", textAlign: "left", marginTop: 40, marginBottom: 10, paddingHorizontal: 20, fontSize: 15 }}
         />
 
         <View style={{ minHeight: 300, width: "100%", backgroundColor: "#FFFFFF", borderRadius: 10, padding: 20 }}>
@@ -87,24 +95,24 @@ const LoginScreen = ({ navigation, userLogin }: any) => {
             text="Don't have an Account?"
             otherStyles={{ color: "#1F1742", opacity: 0.76, fontSize: 14 }}
           />
-          <AnicureButton
-            width="20%"
-            textBtn={true}
-            fontSize={15}
-            title="Sign Up"
-            otherStyles={{ width: 80 }}
-            onPress={() => navigation.navigate("CreateAccount")}
-
-          />
+          {(isLoading == false) ? (
+            <AnicureButton
+              width="20%"
+              textBtn={true}
+              fontSize={15}
+              title="Sign Up"
+              otherStyles={{ width: 80 }}
+              onPress={() => navigation.navigate("CreateAccount")}
+            />
+          ) : (
+              <ActivityIndicator
+                size="large"
+                color={APP_GREEN}
+              />
+            )}
         </View>
-
-
-
-
-
       </View>
-
-    </View>
+    </ScrollView>
   );
 };
 
@@ -144,4 +152,4 @@ const mapStateToProps = (state: any) => {
   })
 };
 
-export default connect(mapStateToProps, { userLogin })(LoginScreen);
+export default connect(mapStateToProps, { updateUserDetail })(LoginScreen);

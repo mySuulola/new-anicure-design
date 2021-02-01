@@ -78,13 +78,12 @@ const AppIntro = ({ navigation }: any) => {
     );
   };
 
-
-
   if (showRealApp) {
     return <Loader />
   } else {
     return (
       <AppIntroSlider
+        keyExtractor={(item) => item.key}
         renderItem={renderItem}
         data={slides}
         renderNextButton={() => <IntroAction onDone={onDone} handleLogin={handleLogin} /> }

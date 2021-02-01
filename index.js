@@ -9,12 +9,13 @@ import {name as appName} from './app.json';
 import {Provider} from 'react-redux';
 import configureStore from './src/store/configureStore';
 import {PersistGate} from 'redux-persist/integration/react';
+import Loader from './src/components/Loader';
 
 const {store, persistor} = configureStore();
 
 const RNRedux = () => (
   <Provider store={store}>
-    <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+    <PersistGate loading={<Loader />} persistor={persistor}>
       <App />
     </PersistGate>
   </Provider>

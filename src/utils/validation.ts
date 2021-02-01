@@ -33,8 +33,8 @@ export const fullNameValidation = (
     setFullName({ value: fullName.value, error: "" });
   }
   return errorDetected;
-
 }
+
 export const farmAddressValidation = (
   farmAddress: { value: string, error: string },
   setFarmAddress: any,
@@ -51,7 +51,6 @@ export const farmAddressValidation = (
     setFarmAddress({ value: farmAddress.value, error: "" });
   }
   return errorDetected;
-
 }
 
 export const farmNameValidation = (
@@ -67,7 +66,6 @@ export const farmNameValidation = (
     setFarmName({ value: farmName.value, error: "" });
   }
   return errorDetected;
-
 }
 
 export const passwordValidation = (

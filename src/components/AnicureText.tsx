@@ -1,8 +1,9 @@
 import React from 'react'
 import { Text, StyleSheet } from 'react-native'
 
+type StatusTypes = "title" | "subTitle";
 interface IAnicureText{
-    type: string,
+    type: StatusTypes,
     text: string,
     otherStyles?: Object
 }
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     color: "#1F1742",
     textAlign: 'center',
     fontFamily: "Roboto-Bold",
-    paddingHorizontal: 20
+    // paddingHorizontal: 20
   },
   subTitle: {
     fontSize: 12,
