@@ -20,6 +20,7 @@ import TabBar from './TabBar';
 import More from '../screens/tabs/More';
 import Appointment from '../screens/tabs/Appointment';
 import Search from '../screens/tabs/Search';
+import DoctorDetail from '../screens/protected/DoctorDetail';
 
 
 const Tab = createBottomTabNavigator();
@@ -43,7 +44,7 @@ const UserTab = () => {
     <NavigationContainer>
        <Stack.Navigator initialRouteName="Landing" headerMode="none">
         <Stack.Screen name="Landing" component={TabNavigator} />
-        {/* <Stack.Screen name="Detail" component={ProductDetail} /> */}
+        <Stack.Screen name="DoctorDetail" component={DoctorDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

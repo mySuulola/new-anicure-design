@@ -4,6 +4,7 @@ import {
   Dimensions,
   View,
   Image,
+  ScrollView
 } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AnicureButton from '../../components/AnicureButton';
@@ -11,7 +12,7 @@ import AnicureText from '../../components/AnicureText';
 import IntroAction from '../../components/IntroAction';
 import Loader from '../../components/Loader';
 
-const { width, height } = Dimensions.get('screen');
+const { width } = Dimensions.get('screen');
 
 const slides = [
   {
@@ -47,23 +48,23 @@ const AppIntro = ({ navigation }: any) => {
     navigation.navigate("Login")
   };
 
-  const renderItem = ({ item } : any) => {
+  const renderItem = ({ item }: any) => {
     return (
       <View style={styles.slide}>
         <AnicureButton
           onPress={handleLogin}
           title={"Skip"}
-          otherStyles={{ alignItems: 'flex-end'}}
+          otherStyles={{ alignItems: 'flex-end', justifyContent: "flex-end" }}
           boldText={true}
           textBtn={true}
           fontSize={15}
           textColor="#1F1742"
         />
         <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-          <Image 
-          resizeMode="contain" 
-          style={styles.image} 
-          source={item.image} 
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={item.image}
           />
           <AnicureText
             text={item.title}
@@ -82,20 +83,22 @@ const AppIntro = ({ navigation }: any) => {
     return <Loader />
   } else {
     return (
-      <AppIntroSlider
-        keyExtractor={(item) => item.key}
-        renderItem={renderItem}
-        data={slides}
-        renderNextButton={() => <IntroAction onDone={onDone} handleLogin={handleLogin} /> }
-        bottomButton={true}
-        renderDoneButton={() => <IntroAction onDone={onDone} handleLogin={handleLogin} />}
-        activeDotStyle={{
-          backgroundColor: "#216B36",
-        }}
-        dotStyle={{
-          backgroundColor: "#BAB9C0"
-        }}
-      />
+      <ScrollView contentContainerStyle={{flex:1, minHeight: 600}}>
+        <AppIntroSlider
+          keyExtractor={(item) => item.key}
+          renderItem={renderItem}
+          data={slides}
+          renderNextButton={() => <IntroAction onDone={onDone} handleLogin={handleLogin} />}
+          bottomButton={true}
+          renderDoneButton={() => <IntroAction onDone={onDone} handleLogin={handleLogin} />}
+          activeDotStyle={{
+            backgroundColor: "#216B36",
+          }}
+          dotStyle={{
+            backgroundColor: "#BAB9C0"
+          }}
+        />
+      </ScrollView>
     );
   }
 };
@@ -104,7 +107,6 @@ export default AppIntro;
 
 const styles = StyleSheet.create({
   slide: {
-    // flex: 1,
     width: "100%",
     height: "70%",
     alignItems: "flex-start",

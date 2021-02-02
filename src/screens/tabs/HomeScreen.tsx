@@ -51,7 +51,7 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
       <View style={[styles.row, { justifyContent: "space-between", alignItems: "center", paddingHorizontal: 30, paddingVertical: 10 }]}>
         <View style={[styles.row, { alignItems: "center", height: 37, marginVertical: 50, }]}>
           <Image
-            source={require("../../assets/svg/logo.png")}
+            source={require("../../assets/svg/profile.png")}
             style={{
               width: 50,
               borderWidth: 4,
@@ -104,7 +104,6 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
         <View style={{
 
           flex: 1,
-          //  borderWidth: 2,
           backgroundColor: "#F4F4F4",
           marginTop: 30,
           borderTopStartRadius: 30,
@@ -114,7 +113,7 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
 
         }}>
           <ScrollView
-          // contentContainerStyle={{flex: 1}}
+          showsVerticalScrollIndicator={false}
           >
             <AnicureText
               type="title"
@@ -124,7 +123,7 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
 
             <ScrollView 
             // contentContainerStyle={{flex: 1}}
-            indicatorStyle="white"
+            showsHorizontalScrollIndicator={false}
             horizontal={true}>
               {dashboardSummary.map(item => (
                  <View  

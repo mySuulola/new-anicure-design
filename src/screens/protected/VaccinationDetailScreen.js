@@ -36,56 +36,7 @@ const VaccinationDetailScreen = ({route, navigation, deleteVaccine}) => {
           subtitle={'Status: ' + status}
         />
       </Appbar.Header> */}
-      <View style={{padding: 10}}>
-        
-          <ImageBackground
-            style={{
-              height: '100%',
-            }}
-            imageStyle={{borderRadius: 20}}
-            source={require('../../assets/img/bird.jpeg')}>
-            {/* <Card.Title
-              subtitleStyle={styles.textWhite}
-              titleStyle={styles.textWhite}
-              title={'Plan Name: ' + detail.planName}
-              subtitle={detail.animalType}
-              // left={(props) => (
-              //   <Avatar.Icon {...props} icon="alpha-p-circle-outline" />
-              // )}
-            />
-            <Card.Content>
-              <Paragraph style={styles.textWhite}>
-                Age Started: {detail.initialAgeOfBird}
-              </Paragraph>
-              <Paragraph style={styles.textWhite}>
-                Next {isMedication ? ' Medication' : ' Vaccination'}:{' '}
-                {nextVaccinationType}
-              </Paragraph>
-              <Paragraph style={styles.textWhite}>
-                Next {isMedication ? ' Medication' : ' Vaccination'} Date:{' '}
-                {nextDate}
-              </Paragraph>
-              <Paragraph style={styles.textWhite}>
-                Plan Name: {detail.planName}
-              </Paragraph>
-              <Paragraph style={styles.textWhite}>
-                Alarm Set: {detail.vaccinationReminder.alarm ? 'True' : 'False'}
-              </Paragraph>
-              <Paragraph style={styles.textWhite}>
-                SMS Set: {detail.vaccinationReminder.sms ? 'True' : 'False'}
-              </Paragraph>
-            </Card.Content>
-          */}
-          <Text>hi</Text>
-          </ImageBackground>
-          {/* <View
-            style={{
-              ...StyleSheet.absoluteFillObject,
-              borderRadius: 20,
-              backgroundColor: 'rgba(69,85,117,0.2)',
-            }}></View> */}
-      </View>
-
+     
       <ScrollView contentContainerStyle={styles.container}>
         {detail.schedule.map((item) => (
           <DashboardItem

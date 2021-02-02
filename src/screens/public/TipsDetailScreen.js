@@ -35,13 +35,13 @@ const TipsDetailScreen = ({route, navigation}) => {
               borderRadius: 30
 
             }}>
-            <Image
+            {/* <Image
               style={{
                 width: 250,
                 height: 250,
               }}
               source={require('../../assets/img/vote.png')}
-            />
+            /> */}
           </View>
         </View>
         <View style={{paddingHorizontal: 30}}>

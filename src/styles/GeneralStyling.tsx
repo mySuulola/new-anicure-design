@@ -5,6 +5,7 @@ const commonStyling = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         paddingTop: 20,
+        paddingBottom: 30
     },
     registrationWhiteSheet: {
         width: "100%",
@@ -16,7 +17,7 @@ const commonStyling = StyleSheet.create({
     centralizedContainer: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
     cardContainer: {
         flex: 1,

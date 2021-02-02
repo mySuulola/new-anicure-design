@@ -22,7 +22,6 @@ const CreateFarm = ({ navigation, updateUserDetail }: any) => {
     const [stateProvince, setStateProvince] = useState({ value: "", error: "" });
     const [isLoading, setIsLoading] = useState(false);
 
-    //
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const handleCreateFarm = async () => {

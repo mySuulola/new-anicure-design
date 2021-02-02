@@ -1,16 +1,20 @@
 import React from 'react'
 import { TouchableOpacity, Text } from 'react-native'
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 interface IAnicureButton {
     title: string,
     onPress: any,
     textColor?: string,
     width?: any,
+    height?: number,
     textBtn?: boolean,
     boldText?: boolean,
     btnColor?: string,
     otherStyles?: Object,
     fontSize ?: number,
+    icon?: string,
+    iconColor?: string,
 }
 
 const AnicureButton = ({
@@ -21,20 +25,31 @@ const AnicureButton = ({
   width, 
   textBtn, 
   otherStyles, 
-  fontSize 
+  fontSize ,
+  height,
+  icon,
+  iconColor,
 } : IAnicureButton) => {
     return (
         <TouchableOpacity
         onPress={onPress}
         style={[{ 
             width: width ?? '100%', 
-            height: 50,
+            height: height ?? 50,
             justifyContent: "center",
-            backgroundColor: btnColor ?? textBtn ? "transparent" : "#216B36", 
+            backgroundColor: btnColor ? btnColor : textBtn  ? "transparent" : "#216B36", 
             paddingVertical: 12, 
-            // marginTop: 10,
-            borderRadius: textBtn ? 0 : 15, 
+            borderRadius: 15, 
+            flexDirection: "row",
             alignItems: "center" }, otherStyles]}>
+          {(icon && icon.length > 2) &&
+          <EntypoIcon
+            name={icon}
+            size={15}
+            color={iconColor ? iconColor : "#619E42"}
+            style={{marginRight: 5}}
+          />
+        }
         <Text style={{
           color: textColor ? textColor : textBtn ? "#216B36" : "#FFFFFF",
           fontSize: fontSize ?? 14,

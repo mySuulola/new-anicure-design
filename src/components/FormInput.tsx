@@ -14,6 +14,7 @@ interface IFormInput {
   onChangeText?: any,
   secureTextEntry?: boolean,
   onPress?: any,
+  searchButton?: any,
   inLineButton?: boolean,
   disabled?: boolean,
   placeholder?: string,
@@ -33,15 +34,16 @@ const FormInput = ({
   error,
   preIcon,
   placeholder,
+  searchButton,
   ...rest
 }: IFormInput) => {
 
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       <Text style={styles.label}>{labelName}</Text>
-      <View style={styles.textContainer}>
+      <View style={[styles.textContainer, {backgroundColor: searchButton ? "#FFFFFF" : 'transparent', borderWidth: searchButton ? 0 : 1}]}>
         {(preIcon && preIcon.length > 2) &&
           <AntDesignIcon
             name={preIcon}
@@ -121,7 +123,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: 50,
-    borderWidth: 1,
     opacity: 0.6,
     borderColor: "#707070",
     borderRadius: 10,
