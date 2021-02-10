@@ -14,7 +14,7 @@ const DoctorDetail = ({ navigation }: any) => {
         <View style={{ flex: 1 }}>
             <ImageBackground
                 source={require("../../assets/svg/profile.png")}
-                // resizeMode=
+                // resizeMode="contain"
                 style={{ width: "100%", height: height / 2.5, justifyContent: "space-between" }}>
                 <Appbar
                     back={true}
@@ -42,10 +42,8 @@ const DoctorDetail = ({ navigation }: any) => {
                         />
                     </View>
                 </View>
-
             </ImageBackground>
             <View style={{ flex: 1 }}>
-
                 <View style={{ paddingBottom: 20, justifyContent: "space-between", marginHorizontal: 20, paddingHorizontal: 20, borderBottomEndRadius: 20, borderBottomStartRadius: 20, marginBottom: 20, paddingTop: 3, backgroundColor: "#FFFFFF" }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <AnicureText
@@ -64,15 +62,11 @@ const DoctorDetail = ({ navigation }: any) => {
                         <ImageTextRow text="Yaba, Lagos." distance="1.3 Km from you" OtherStyles={{marginTop: 10}} />
                         <ImageTextRow text="1000 Naira/hr" OtherStyles={{marginTop: 10}} />
                     </View>
-
                     <Divider margin={20} />
-
-
                     <View style={{ flexDirection: "row", justifyContent: "space-between", }}>
                         <ImageTextRow type="large" text="Adeyemi Vet. Clinic" distance="15 ,Ajayi Road Yaba Lagos" />
                         <ImageTextRow type="large" text="Call" />
                     </View>
-
                     <View style={{ flexDirection: "row", justifyContent: "space-between", }}>
                         <ImageTextRow type="large" text="Consultation Time" distance="Every :Tue 5pm-7pm" />
                         <ImageTextRow type="large" text="Chat" />
@@ -82,15 +76,12 @@ const DoctorDetail = ({ navigation }: any) => {
                 <View style={{width: "100%", paddingHorizontal: 20}}>
                 <AnicureButton 
                 title="Book an Appointment"
-                onPress={() => {}}
+                onPress={() => navigation.navigate("ChatScreen")}
                 otherStyles={{ borderRadius: 50}}
                 icon="circle-with-plus"
                 iconColor="#FFFFFF"
                 />
                 </View>
-
-
-
             </View>
         </View>
     )

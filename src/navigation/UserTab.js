@@ -1,26 +1,16 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from '../screens/tabs/HomeScreen';
-import ProfileScreen from '../screens/tabs/ProfileScreen';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import VaccinationScreen from '../screens/tabs/VaccinationScreen';
 import ChatScreen from '../screens/protected/ChatScreen';
-import { createStackNavigator } from '@react-navigation/stack';
-import VaccinationCreateScreen from '../screens/protected/VaccinationCreateScreen';
-import VaccinationDetailScreen from '../screens/protected/VaccinationDetailScreen';
-import WebsiteScreen from '../screens/public/WebsiteScreen';
-import TipsScreen from '../screens/public/TipsScreen';
-import ScheduleScreen from '../screens/protected/ScheduleScreen';
-import FeedbackScreen from '../screens/protected/FeedbackScreen';
-import TipsDetailScreen from '../screens/public/TipsDetailScreen';
-import BillingScreen from '../screens/tabs/BillingScreen';
 import TabBar from './TabBar';
 import More from '../screens/tabs/More';
 import Appointment from '../screens/tabs/Appointment';
 import Search from '../screens/tabs/Search';
 import DoctorDetail from '../screens/protected/DoctorDetail';
+import VideoChat from '../screens/protected/VideoChat';
 
 
 const Tab = createBottomTabNavigator();
@@ -45,6 +35,8 @@ const UserTab = () => {
        <Stack.Navigator initialRouteName="Landing" headerMode="none">
         <Stack.Screen name="Landing" component={TabNavigator} />
         <Stack.Screen name="DoctorDetail" component={DoctorDetail} />
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
+        <Stack.Screen name="VideoChat" component={VideoChat} />
       </Stack.Navigator>
     </NavigationContainer>
   );

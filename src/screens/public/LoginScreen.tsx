@@ -81,28 +81,10 @@ const LoginScreen = ({ navigation, updateUserDetail }: any) => {
             secureTextEntry={true}
             onChangeText={(userPassword: string) => setPassword({ value: userPassword, error: password.error })}
           />
-
-          <AnicureButton
-            onPress={handleLogin}
-            title="Sign In"
-          />
-        </View>
-
-        <View style={{ flexDirection: "row", width: "100%", alignItems: "center", justifyContent: "center", paddingTop: 50 }}>
-          <AnicureText
-
-            type="subTitle"
-            text="Don't have an Account?"
-            otherStyles={{ color: "#1F1742", opacity: 0.76, fontSize: 14 }}
-          />
           {(isLoading == false) ? (
             <AnicureButton
-              width="20%"
-              textBtn={true}
-              fontSize={15}
-              title="Sign Up"
-              otherStyles={{ width: 80 }}
-              onPress={() => navigation.navigate("CreateAccount")}
+              onPress={handleLogin}
+              title="Sign In"
             />
           ) : (
               <ActivityIndicator
@@ -110,6 +92,22 @@ const LoginScreen = ({ navigation, updateUserDetail }: any) => {
                 color={APP_GREEN}
               />
             )}
+        </View>
+
+        <View style={{ flexDirection: "row", width: "100%", alignItems: "center", justifyContent: "center", paddingTop: 50 }}>
+          <AnicureText
+            type="subTitle"
+            text="Don't have an Account?"
+            otherStyles={{ color: "#1F1742", opacity: 0.76, fontSize: 14 }}
+          />
+          <AnicureButton
+            width="20%"
+            textBtn={true}
+            fontSize={15}
+            title="Sign Up"
+            otherStyles={{ width: 80 }}
+            onPress={() => navigation.navigate("CreateAccount")}
+          />
         </View>
       </View>
     </ScrollView>
