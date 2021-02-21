@@ -60,7 +60,7 @@ const LoginScreen = ({ navigation, updateUserDetail }: any) => {
           otherStyles={{ fontFamily: "Roboto-Medium", width: "100%", textAlign: "left", marginTop: 40, marginBottom: 10, paddingHorizontal: 20, fontSize: 15 }}
         />
 
-        <View style={{ minHeight: 300, width: "100%", backgroundColor: "#FFFFFF", borderRadius: 10, padding: 20 }}>
+        <View style={{ minHeight: 300, width: "100%", backgroundColor: "#FFFFFF", borderRadius: 10, paddingHorizontal: 20, paddingVertical: 50, }}>
 
           <FormInput
             preIcon={"user"}

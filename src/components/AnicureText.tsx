@@ -1,16 +1,17 @@
 import React from 'react'
-import { Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet, StyleProp, TextStyle } from 'react-native'
 
 type StatusTypes = "title" | "subTitle";
 interface IAnicureText{
     type: StatusTypes,
     text: string,
-    otherStyles?: Object
+    left?: boolean,
+    otherStyles?: StyleProp<TextStyle>
 }
 
-const AnicureText = ({ type, text, otherStyles } : IAnicureText) => {
+const AnicureText = ({ type, text, otherStyles, left } : IAnicureText) => {
     return (
-        <Text style={[type === "title" ? styles.title : styles.subTitle, otherStyles]}>
+        <Text style={[type === "title" ? styles.title : styles.subTitle, {textAlign: left ? "left" : "center"}, otherStyles]}>
           {text}
         </Text>
     )
@@ -21,7 +22,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     // marginVertical: 10,
     color: "#1F1742",
-    textAlign: 'center',
     fontFamily: "Roboto-Bold",
     // paddingHorizontal: 20
   },
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     color: "#777779",
     fontFamily: "Roboto-Regular",
     marginVertical: 5,
-    textAlign: "center",
   }
 })
 

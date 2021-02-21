@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, TextInput, KeyboardTypeOptions } from 'react-native';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import { APP_GREEN } from '../utils/constant';
 
 interface IFormInput {
   labelName?: string,
@@ -41,9 +42,14 @@ const FormInput = ({
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <View style={[styles.container]}>
-      <Text style={styles.label}>{labelName}</Text>
-      <View style={[styles.textContainer, {backgroundColor: searchButton ? "#FFFFFF" : 'transparent', borderWidth: searchButton ? 0 : 1}]}>
+    <View style={[styles.container, { marginBottom: inLineButton ? 0 : 20, }]}>
+      { (labelName !== undefined && labelName !== "") && <Text style={styles.label}>{labelName}</Text>}
+      <View style={[styles.textContainer, {
+        borderRadius: inLineButton ? 0 : 10,
+        borderWidth: inLineButton ? 0.3 : searchButton ? 0 : 1,
+        opacity: inLineButton ? 1 : 0.6,
+        backgroundColor: searchButton ? "#FFFFFF" : 'transparent', 
+      }]}>
         {(preIcon && preIcon.length > 2) &&
           <AntDesignIcon
             name={preIcon}
@@ -58,10 +64,10 @@ const FormInput = ({
           placeholder={placeholder}
           placeholderTextColor={"#1F1742"}
           secureTextEntry={showPassword ? false : secureTextEntry}
-          maxLength={40}
+          // maxLength={40}
           style={[styles.input,
           {
-            width: inLineButton ? "50%" : "85%",
+            width: inLineButton ? "85%" : "85%",
           }]}
         />
         {
@@ -69,8 +75,8 @@ const FormInput = ({
             <TouchableOpacity
               disabled={disabled}
               style={[styles.button, {
-                width: inLineButton ? "30%" : "1%",
-                backgroundColor: inLineButton ? "green" : 'transparent',
+                width: inLineButton ? "20%" : "1%",
+                backgroundColor: inLineButton ? APP_GREEN : 'transparent',
               }]}
               onPress={() => {
                 if (inLineButton && !disabled) {
@@ -88,7 +94,7 @@ const FormInput = ({
                   :
                   icon === "password" ?
                     <Image
-                      resizeMode="cover"
+                      resizeMode="contain"
                       style={styles.passwordImage}
                       source={!showPassword ? require("../assets/svg/open_eye.png") : require("../assets/svg/close_eye.png")} />
                     : <View></View>
@@ -96,8 +102,10 @@ const FormInput = ({
             </TouchableOpacity>
           )}
       </View>
-      <Text style={styles.errorText}>{error}</Text>
-      </View>
+      { (error !== undefined && error !== "") &&
+        <Text style={styles.errorText}>{error}</Text>
+      }
+    </View>
   );
 };
 
@@ -111,6 +119,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
+    // borderWidth: 1,
   },
   label: {
     fontSize: 14,
@@ -123,9 +132,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: 50,
-    opacity: 0.6,
     borderColor: "#707070",
-    borderRadius: 10,
     paddingHorizontal: 10,
   },
   button: {

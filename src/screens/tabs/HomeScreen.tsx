@@ -17,7 +17,7 @@ import { userLogout } from '../../store/actions/userAction';
 
 const dashboardSummary = [
   {
-    title: "Pents",
+    title: "Pens",
     count: 4,
     header: "Total",
     summary: "40 broilers \n 30 layers \n 35 feeders",
@@ -35,6 +35,13 @@ const dashboardSummary = [
     count: 4,
     header: "",
     summary: "View Farm Analytics for the month",
+    image: require("../../assets/svg/analytics.png"),
+  },
+  {
+    title: "Create New",
+    count: 4,
+    header: "",
+    summary: "Create New farm/pen",
     image: require("../../assets/svg/analytics.png"),
   },
   
@@ -88,7 +95,7 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
         }}>
           <DashboardTextHighlights
             count={4}
-            description="Total Pents"
+            description="Total Pens"
           />
           <DashboardTextHighlights
             count={4}
@@ -130,12 +137,13 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
                  key={item.title}
                  style={{
                   minHeight: 151,
-                  minWidth: 200,
+                  minWidth: 150,
                   backgroundColor: "#FFFFFF",
                   marginRight: 15,
                   alignItems: "center",
                   paddingHorizontal: 20,
-                  paddingVertical: 10,
+                  paddingBottom: 10,
+                  paddingTop: 30,
                   marginTop: 20,
                   borderRadius: 10
                 }}>
@@ -146,7 +154,7 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
                   resizeMode="cover"
                   />
                   <AnicureText 
-                  text={`${item.title} ${item.count}`}
+                  text={`${item.title}`}
                   type="title"
                   otherStyles={{ fontSize: 14, marginVertical: 4}}
                   />
@@ -154,7 +162,8 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
                   <AnicureText 
                   text={`${item.header} ${item.summary}`}
                   type="subTitle"
-                  otherStyles={{textAlign: "left", color: "#619E42"}}
+                  
+                  otherStyles={{textAlign: "center", color: "#619E42", maxWidth: 130}}
                   />
                 </View>
               ))}

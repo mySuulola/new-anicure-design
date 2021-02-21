@@ -2,6 +2,7 @@ import React from 'react'
 import { TouchableOpacity, Text } from 'react-native'
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
+type StatusType = "up" | "down";
 interface IAnicureButton {
     title: string,
     onPress: any,
@@ -9,12 +10,14 @@ interface IAnicureButton {
     width?: any,
     height?: number,
     textBtn?: boolean,
+    cancelBtn?: boolean,
     boldText?: boolean,
     btnColor?: string,
     otherStyles?: Object,
     fontSize ?: number,
     icon?: string,
     iconColor?: string,
+    dropDown?: StatusType;
 }
 
 const AnicureButton = ({
@@ -29,6 +32,8 @@ const AnicureButton = ({
   height,
   icon,
   iconColor,
+  cancelBtn,
+  dropDown,
 } : IAnicureButton) => {
     return (
         <TouchableOpacity
@@ -36,11 +41,14 @@ const AnicureButton = ({
         style={[{ 
             width: width ?? '100%', 
             height: height ?? 50,
-            justifyContent: "center",
-            backgroundColor: btnColor ? btnColor : textBtn  ? "transparent" : "#216B36", 
+            paddingHorizontal: dropDown ? 20 : 0,
+            justifyContent: dropDown ? "space-between" : "center",
+            backgroundColor: btnColor ? btnColor : (textBtn|| cancelBtn )  ? "transparent" : "#216B36", 
             paddingVertical: 12, 
             borderRadius: 15, 
             flexDirection: "row",
+            borderColor: cancelBtn ? 'red' : 'transparent',
+            borderWidth: cancelBtn ? 1 : 0,
             alignItems: "center" }, otherStyles]}>
           {(icon && icon.length > 2) &&
           <EntypoIcon
@@ -51,11 +59,21 @@ const AnicureButton = ({
           />
         }
         <Text style={{
-          color: textColor ? textColor : textBtn ? "#216B36" : "#FFFFFF",
+          color: textColor ? textColor : textBtn ? "#216B36" : cancelBtn ? 'red' : "#FFFFFF",
           fontSize: fontSize ?? 14,
           fontFamily: textBtn ? "Roboto-Medium" :"Roboto-Regular" ,
           // fontWeight: boldText === false ? "normal" : "bold",
         }} >{title}</Text>
+        {
+          dropDown && <EntypoIcon
+          name={dropDown === "up" ? "chevron-small-up" : "chevron-small-down"}
+          size={20}
+          color={"#FFFFFF"}
+          // style={{marginRight: 5}}
+        />
+        }
+
+
       </TouchableOpacity>
     )
 }

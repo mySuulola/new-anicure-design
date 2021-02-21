@@ -1,36 +1,17 @@
 import React from 'react'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { APP_GREEN } from '../utils/constant'
 import AnicureText from './AnicureText'
 import { ImageTextRow } from './ImageTextRow'
-
-const rating = (rating: number) => {
-    let stars = []
-    for (let i = 0; i < 5; i++) {
-        if (i >= rating) {
-            stars.push(require("../assets/svg/star_unfilled.png"));
-        } else {
-            stars.push(require("../assets/svg/star_filled.png"));
-        }
-    }
-
-    return stars.map((item, index) => (
-        <Image
-            key={index}
-            source={item}
-            style={{ width: 10, height: 10 }}
-        />
-    )
-    );
-}
-
+import Rating from './Rating'
 
 const DoctorCard = ({ item, navigation }: any) => {
 
     return (
         <TouchableOpacity
-            onPress={() => navigation.push("DoctorDetail")}
+            onPress={() => navigation.push("DoctorDetail", { payload: item })}
             style={{
-                height: 128,
+                // height: 128,
                 width: "100%",
                 borderRadius: 20,
                 padding: 10,
@@ -49,19 +30,33 @@ const DoctorCard = ({ item, navigation }: any) => {
                 />
 
                 <AnicureText
-                    text="10 Years of Experience"
+                    text={`Years of Experience: ${item.yearsOfExperience ?? ""}`}
                     type="subTitle"
-                    otherStyles={{ color: "#ADADAD", fontSize: 10, fontFamily: "Roboto-Bold" }}
+                    otherStyles={{ marginVertical: 0, color: "#ADADAD", fontSize: 10, fontFamily: "Roboto-Bold" }}
                 />
+                <View style={{ flexDirection: 'row', marginBottom: 10, width: "100%" }} >
+                    <AnicureText
+                        text={"Availability: "}
+                        type="subTitle"
+                        left
+                        otherStyles={{ fontFamily: "Roboto-Bold", color: APP_GREEN, fontSize: 7, marginTop: 0 }}
+                    />
+                    <AnicureText
+                        text={item.availability ?? ""}
+                        type="subTitle"
+                        left
+                        otherStyles={{ color: APP_GREEN, fontSize: 7, marginTop: 0, textAlign: "left", }}
+                    />
+                </View>
             </View>
-            <View style={{ flex: 1, marginLeft: 10 }}>
+            <View style={{ flex: 1, marginLeft: 15 }}>
                 <AnicureText
                     text={item.name}
                     type="title"
                     otherStyles={{ color: "#1F1742", fontSize: 20, textAlign: "left" }}
                 />
                 <AnicureText
-                    text="Vet. Surgeon"
+                    text={item.title}
                     type="title"
                     otherStyles={{ color: "#216B36", fontSize: 15, textAlign: "left" }}
                 />
@@ -71,18 +66,18 @@ const DoctorCard = ({ item, navigation }: any) => {
                         type="title"
                         otherStyles={{ fontSize: 10, color: "#0F0F0F" }}
                     />
-                    <View style={{ flexDirection: "row", marginHorizontal: 10 }}>
-                        {rating(3)}
-                    </View>
+                    <Rating rating={+item.rating} />
                     <AnicureText
-                        text="10 Reviews"
+                        text={`${item?.reviewCount ?? "0"} Reviews`}
                         type="title"
                         otherStyles={{ fontSize: 10, color: "#ADADAD" }}
                     />
                 </View>
                 <View style={{ width: "100%", flexDirection: "row" }}>
-                    <ImageTextRow text="Yaba, Lagos." distance="1.3 Km from you" />
-                    <ImageTextRow text="1000 Naira/hr" />
+                    <ImageTextRow status="location" text={item.location} 
+                    // distance="1.3 Km from you" 
+                    />
+                    <ImageTextRow status="wallet" text={`N${item.chargePerSession}/session`} />
                 </View>
             </View>
         </TouchableOpacity>

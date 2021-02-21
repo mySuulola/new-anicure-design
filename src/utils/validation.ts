@@ -76,9 +76,9 @@ export const passwordValidation = (
   if (password.value === "") {
     errorDetected = true;
     setPassword({ value: password.value, error: "Password cannot be blank" });
-  } else if (password.value !== "" && password.value.length < 8) {
+  } else if (password.value !== "" && password.value.length < 5) {
     errorDetected = true;
-    setPassword({ value: password.value, error: "Password must be at least 8 digits" });
+    setPassword({ value: password.value, error: "Password must be at least 5 digits" });
   }else {
     setPassword({ value: password.value, error: "" });
   }

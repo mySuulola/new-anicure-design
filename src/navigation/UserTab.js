@@ -4,13 +4,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from '../screens/tabs/HomeScreen';
-import ChatScreen from '../screens/protected/ChatScreen';
+import ChatScreen from '../screens/protected/Appointment/ChatScreen';
 import TabBar from './TabBar';
 import More from '../screens/tabs/More';
 import Appointment from '../screens/tabs/Appointment';
 import Search from '../screens/tabs/Search';
 import DoctorDetail from '../screens/protected/DoctorDetail';
 import VideoChat from '../screens/protected/VideoChat';
+import PastAppointmentDetail from '../screens/protected/Appointment/PastAppointmentDetail';
 
 
 const Tab = createBottomTabNavigator();
@@ -37,6 +38,7 @@ const UserTab = () => {
         <Stack.Screen name="DoctorDetail" component={DoctorDetail} />
         <Stack.Screen name="ChatScreen" component={ChatScreen} />
         <Stack.Screen name="VideoChat" component={VideoChat} />
+        <Stack.Screen name="PastAppointmentDetail" component={PastAppointmentDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

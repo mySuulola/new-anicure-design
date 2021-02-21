@@ -44,9 +44,9 @@ const Appbar = ({
                     }}>{title}</Text>
                 }
             </View>
-            <View style={{ backgroundColor: "#FFFFFF", borderRadius: 15 }}>
-                    {children}
-                </View>
+            {/* <View style={{ backgroundColor: "#FFFFFF", borderRadius: 15 }}> */}
+            {children}
+            {/* </View> */}
             <View>
                 {trailingIcon &&
                     <IoniconsIcon
