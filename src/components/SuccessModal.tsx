@@ -1,9 +1,10 @@
 import React from 'react'
-import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
 import AnicureButton from './AnicureButton'
 import AnicureText from './AnicureText'
+import Paystack from './Paystack';
 
-type StatusType = 'booking' | 'chat' | 'call';
+type StatusType = 'chat' | 'success' | 'error' | 'rejoice';
 interface ISuccessModal {
     title: string,
     description: string,
@@ -23,6 +24,9 @@ const SuccessModal = ({
     actionText,
     operationType
 }: ISuccessModal) => {
+
+    let amount = 0;
+   amount = operationType === "chat" ? 1000 : 20;
     return (
         <Modal
             animationType={"slide"}
@@ -45,8 +49,8 @@ const SuccessModal = ({
                         paddingHorizontal: 30,
                         paddingVertical: 30,
                         width: "100%",
-                        maxWidth: 500,
-                        alignItems: "center"
+                        maxWidth: 280,
+                        alignItems: "center",
                     }}
                 >
                     <TouchableOpacity
@@ -64,13 +68,16 @@ const SuccessModal = ({
                     </TouchableOpacity>
 
                     <Image
-                        source={require("../assets/svg/success.png")}
-                        accessibilityHint={"successful registration"}
+                        source={
+                            operationType === "error" ? require("../assets/images/disappointed.png") 
+                            : operationType === "rejoice" ? require("../assets/images/success_modal.png") 
+                            : require("../assets/images/successful.png")
+                        }
+                        accessibilityHint={"report"}
+                        resizeMode="contain"
                         style={{ width: 150, height: 113 }}
                     />
                     <View style={{
-                        // flex: 1,
-                        // borderWidth: 1,
                         alignItems: "center",
                         justifyContent: "center",
                     }} >
@@ -90,18 +97,24 @@ const SuccessModal = ({
                             otherStyles={{ marginBottom: 10 }}
                         />
                     </View>
-
-                    <AnicureButton
-                        otherStyles={{ marginTop: 40 }}
-                        title={actionText}
-                        onPress={actionPress}
-                        width={"100%"}
-                    />
+                    {operationType === "chat" ? <Paystack
+                        onSuccess={onClose}
+                        amount={amount}
+                        actionText={actionText}
+                        onCancel={actionPress}
+                    /> :
+                        <AnicureButton
+                            otherStyles={{ marginTop: 40 }}
+                            title={actionText}
+                            onPress={actionPress}
+                            width={"100%"}
+                        />}
 
                     {operationType === "chat" && <AnicureButton
                         textBtn={true}
                         boldText
                         title={"Maybe Later"}
+                        otherStyles={{marginTop: 40}}
                         onPress={onClose}
                         width={"100%"}
                     />}

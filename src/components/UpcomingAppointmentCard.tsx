@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, Dimensions, View } from 'react-native'
+import { Image, StyleSheet, Dimensions, View, StyleProp, ViewStyle, ImageSourcePropType } from 'react-native'
 import AnicureButton from './AnicureButton'
 import AnicureText from './AnicureText'
 import Divider from './Divider'
@@ -8,8 +8,9 @@ import { ImageTextRow } from './ImageTextRow'
 const { width } = Dimensions.get("screen")
 
 interface IUpcoming {
-    onChat: () => void,
-    onCancel: () => void,
+    onChat?: () => void,
+    onCancel?: () => void,
+    doctorImage: ImageSourcePropType,
     doctorName: string,
     title: string,
     bio: string,
@@ -19,11 +20,13 @@ interface IUpcoming {
     clinicAddress: string,
     date: string,
     time: string,
+    otherStyles?: StyleProp<ViewStyle>
 }
 
 const UpcomingAppointmentCard = ({
     onChat,
     doctorName,
+    doctorImage,
     title,
     bio,
     location,
@@ -32,15 +35,16 @@ const UpcomingAppointmentCard = ({
     clinicAddress,
     date,
     time,
-    onCancel
+    onCancel,
+    otherStyles
 }: IUpcoming) => {
     return (
-        <View style={{ width: "100%", marginTop: 20, backgroundColor: "#FFFFFF", borderRadius: 20, padding: 10 }}>
+        <View style={[{ width: "100%", marginTop: 20, backgroundColor: "#FFFFFF", borderRadius: 20, padding: 10 }, otherStyles]}>
             <View style={[styles.row, { marginBottom: 10 }]}>
                 <Image
-                    source={require("../assets/svg/profile.png")}
+                    source={doctorImage}
                     style={{ width: 75, height: 75, borderRadius: 10, marginRight: 10, marginBottom: 10 }}
-                    resizeMode="contain"
+                    resizeMode="cover"
                 />
                 <View>
                     <AnicureText
@@ -76,7 +80,7 @@ const UpcomingAppointmentCard = ({
                 <ImageTextRow OtherStyles={styles.imageTextMargin} status="time" type="large" text={time} boldText />
             </View>
             <Divider noSpace />
-            <View style={styles.rowBetween}>
+            {(onCancel && onChat) && <View style={styles.rowBetween}>
                 <AnicureButton
                     title="Chat Doctor"
                     width={width / 2.7}
@@ -90,15 +94,7 @@ const UpcomingAppointmentCard = ({
                     cancelBtn
                     onPress={onCancel}
                 />
-
-            </View>
-
-
-
-
-            {/*  */}
-            {/*  */}
-            {/*  */}
+            </View>}
         </View>
     )
 }

@@ -5,13 +5,13 @@ import {
 import { Dispatch } from 'redux';
 
 export const updateUserDetail = (
-  credentials: {email: string, username: string}
+  userDetail: Object
   ) => async (
     dispatch: Dispatch
     ) => {
   return dispatch({
     type: UPDATE_USER_DETAIL,
-    payload: credentials,
+    payload: userDetail,
   });
 };
 

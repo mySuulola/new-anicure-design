@@ -28,6 +28,7 @@ const StartedRow = ({ imageSource, text, top, bottom }: IStartedRow) => {
                 <AnicureText
                     otherStyles={{ fontSize: 14, color: "#1F1742", fontFamily: "Roboto-Bold" }}
                     text={text}
+                    left
                     type="subTitle"
                 />
             </View>

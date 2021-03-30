@@ -12,15 +12,19 @@ import RtcEngine, {
   RtcRemoteView,
   VideoRenderMode,
 } from 'react-native-agora';
-import Appbar from '../../components/Appbar';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import AnicureText from '../../components/AnicureText';
+import { APP_GREEN } from '../../utils/constant';
 import requestCameraAndAudioPermission from '../../utils/permissions';
 
 const dimensions = {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  };
+  width: Dimensions.get('window').width,
+  height: Dimensions.get('window').height,
+};
 
-interface Props {}
+interface Props {
+  navigation: any;
+}
 
 /**
  * @property peerIds Array for storing connected peers
@@ -32,21 +36,31 @@ interface State {
   appId: string;
   token: string;
   channelName: string;
+  vidMute: boolean;
+  audMute: boolean;
   joinSucceed: boolean;
+  loadingState: string;
   peerIds: number[];
 }
 
-export default class VideoChat extends Component<Props, State> {
+class VideoChat extends Component<Props, State> {
   _engine?: RtcEngine;
   navigation?: any;
 
   constructor(props: any) {
     super(props);
+    const { channelName, agoraToken } = props.route.params.payload;
+    console.log(agoraToken)
+    console.log("----------------")
+    console.log(channelName)
     this.navigation = props.navigation;
     this.state = {
       appId: "7a570232bfbd4725a7253e76cf8eb678",
-      token: "0067a570232bfbd4725a7253e76cf8eb678IADKK8ChTda0JxunGtTTS6+4hNgrkQ980SfEdrYmzlQ+KU7rHXcAAAAAEABwjq6PxC4kYAEAAQDCLiRg",
-      channelName: 'Doctor Suu',
+      token: agoraToken,
+      channelName: channelName,
+      loadingState: "Loading...",
+      vidMute: false,
+      audMute: false,
       joinSucceed: false,
       peerIds: [],
     };
@@ -59,7 +73,19 @@ export default class VideoChat extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.init();
+    console.log('mounting component')
+    this.initializeCall();
+  }
+
+  componentWillUnmount() {
+    console.log('destroying component')
+    // this.endCall();
+    this._engine?.leaveChannel()
+  }
+
+  async initializeCall() {
+    await this.init();
+    this.startCall();
   }
 
   /**
@@ -68,15 +94,18 @@ export default class VideoChat extends Component<Props, State> {
    */
   init = async () => {
     const { appId } = this.state;
+    console.log('appId', appId)
     this._engine = await RtcEngine.create(appId);
     await this._engine.enableVideo();
 
     this._engine.addListener('Warning', (warn) => {
       console.log('Warning', warn);
+      this.setState({ loadingState: `Connectivity Issues... ${warn}` });
     });
 
-    this._engine.addListener('Error', (err) => {
-      console.log('Error', err);
+    this._engine.addListener('Error', (error) => {
+      console.log('Error', error);
+      this.setState({ loadingState: `Cannot Connect...${error}` });
     });
 
     this._engine.addListener('UserJoined', (uid, elapsed) => {
@@ -117,6 +146,8 @@ export default class VideoChat extends Component<Props, State> {
    */
   startCall = async () => {
     // Join Channel using null token and channel name
+    console.log(this.state.token, 'this.state.token')
+    console.log(this.state.channelName, 'this.state.channelName')
     await this._engine?.joinChannel(
       this.state.token,
       this.state.channelName,
@@ -132,26 +163,69 @@ export default class VideoChat extends Component<Props, State> {
   endCall = async () => {
     await this._engine?.leaveChannel();
     this.setState({ peerIds: [], joinSucceed: false });
+    this.props.navigation.goBack()
   };
+
+  /**
+   * @name toggleAudio
+   * @description Function to toggle local user's audio
+   */
+  toggleAudio() {
+    let mute = this.state.audMute;
+    console.log('Audio toggle', mute);
+    this._engine?.muteLocalAudioStream(!mute);
+    this.setState({
+      audMute: !mute,
+    });
+  }
+
+
+  /**
+   * @name toggleVideo
+   * @description Function to toggle local user's video
+   */
+  toggleVideo() {
+    let mute = this.state.vidMute;
+    console.log('Video toggle', mute);
+    this.setState({
+      vidMute: !mute,
+    });
+    !this.state.vidMute ? this._engine?.disableVideo() : this._engine?.enableVideo()
+  }
+
+  /**
+   * @name toggleVideo
+   * @description Function to toggle local user's video
+   */
+  switchCamera() {
+    this._engine?.switchCamera();
+  }
 
   render() {
     return (
-      <View style={styles.max}>
-          <Appbar
-            back={true}
-            navigation={this.navigation}
-            trailingIcon="ios-notifications"
+      <View style={styles.container}>
+        {this._renderVideos()}
+        <View style={styles.buttonBar}>
+          <Icon.Button style={styles.iconStyle}
+            backgroundColor={APP_GREEN}
+            name={this.state.audMute ? 'mic-off' : 'mic'}
+            onPress={() => this.toggleAudio()}
           />
-        <View style={styles.max}>
-          <View style={styles.buttonHolder}>
-            <TouchableOpacity onPress={this.startCall} style={styles.button}>
-              <Text style={styles.buttonText}> Start Video </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.endCall} style={styles.button}>
-              <Text style={styles.buttonText}> End Call </Text>
-            </TouchableOpacity>
-          </View>
-          {this._renderVideos()}
+          <Icon.Button style={styles.iconStyle}
+            backgroundColor={APP_GREEN}
+            name="call-end"
+            onPress={() => this.endCall()}
+          />
+          <Icon.Button style={styles.iconStyle}
+            backgroundColor={APP_GREEN}
+            name={this.state.vidMute ? 'videocam-off' : 'videocam'}
+            onPress={() => this.toggleVideo()}
+          />
+          <Icon.Button style={styles.iconStyle}
+            backgroundColor={APP_GREEN}
+            name={'switch-camera'}
+            onPress={() => this.switchCamera()}
+          />
         </View>
       </View>
     );
@@ -160,15 +234,17 @@ export default class VideoChat extends Component<Props, State> {
   _renderVideos = () => {
     const { joinSucceed } = this.state;
     return joinSucceed ? (
-      <View style={styles.fullView}>
-        <RtcLocalView.SurfaceView
-          style={styles.max}
-          channelId={this.state.channelName}
-          renderMode={VideoRenderMode.Hidden}
-        />
+      <>
+        <View style={styles.fullView}>
+          <RtcLocalView.SurfaceView
+            style={styles.max}
+            channelId={this.state.channelName}
+            renderMode={VideoRenderMode.Hidden}
+          />
+        </View>
         {this._renderRemoteVideos()}
-      </View>
-    ) : null;
+      </>
+    ) : <AnicureText text={this.state.loadingState} type="subTitle" otherStyles={{ marginTop: 0, paddingTop: 10, backgroundColor: APP_GREEN, color: "#FFFFFF", paddingVertical: 5, fontSize: 10 }} />;
   };
 
   _renderRemoteVideos = () => {
@@ -179,60 +255,78 @@ export default class VideoChat extends Component<Props, State> {
         contentContainerStyle={{ paddingHorizontal: 2.5 }}
         horizontal={true}
       >
-        {peerIds.map((value) => {
-          return (
-            <RtcRemoteView.SurfaceView
-              style={styles.remote}
-              uid={value}
-              channelId={this.state.channelName}
-              renderMode={VideoRenderMode.Hidden}
-              zOrderMediaOverlay={true}
-            />
-          );
-        })}
+        {
+          peerIds.length > 0 ?
+            <View style={styles.container} >{peerIds.map((value) => {
+              return (
+                <RtcRemoteView.SurfaceView
+                  style={styles.remote}
+                  uid={value}
+                  channelId={this.state.channelName}
+                  renderMode={VideoRenderMode.Hidden}
+                  zOrderMediaOverlay={true}
+                />
+              );
+            })}</View>
+            :
+            <AnicureText text={`Waiting for others to join ${peerIds.length}`} type="subTitle" />
+
+        }
       </ScrollView>
     );
   };
 }
 
+export default VideoChat;
+
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   max: {
-    flex: 1,
-  },
-  buttonHolder: {
-    height: 100,
-    alignItems: 'center',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  button: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#0093E9',
-    borderRadius: 25,
-  },
-  buttonText: {
-    color: '#fff',
+    width: 150,
+    height: 150
   },
   fullView: {
-    width: dimensions.width,
-    height: dimensions.height - 100,
+    width: 150,
+    height: 200,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+
+    borderWidth: 1
   },
   remoteContainer: {
-    width: '100%',
-    height: 150,
-    position: 'absolute',
-    top: 5,
+    width: dimensions.width,
+    height: dimensions.height - 50,
   },
   remote: {
-    width: 150,
-    height: 150,
-    marginHorizontal: 2.5,
+    width: dimensions.width,
+    height: dimensions.height - 50,
   },
   noUserText: {
     paddingHorizontal: 10,
     paddingVertical: 5,
     color: '#0093E9',
+  },
+  buttonBar: {
+    height: 50,
+    backgroundColor: APP_GREEN,
+    display: 'flex',
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignContent: 'center',
+  },
+  iconStyle: {
+    fontSize: 34,
+    paddingTop: 15,
+    // paddingLeft: 20,
+    // paddingRight: 20,
+    paddingBottom: 15,
+    borderRadius: 0,
   },
 });

@@ -6,10 +6,9 @@ import { ImageTextRow } from './ImageTextRow'
 import Rating from './Rating'
 
 const DoctorCard = ({ item, navigation }: any) => {
-
     return (
         <TouchableOpacity
-            onPress={() => navigation.push("DoctorDetail", { payload: item })}
+            onPress={item.isConfirmed ? () => navigation.push("DoctorDetail", { payload: item }) : () => { }}
             style={{
                 // height: 128,
                 width: "100%",
@@ -24,8 +23,8 @@ const DoctorCard = ({ item, navigation }: any) => {
                 alignItems: "center"
             }}>
                 <Image
-                    resizeMode="contain"
-                    source={require("../assets/svg/profile.png")}
+                    resizeMode="cover"
+                    source={item.photo ? { uri: item.photo } : require("../assets/svg/profile.png")}
                     style={{ width: 75, height: 75, borderRadius: 20, marginBottom: 10 }}
                 />
 
@@ -42,7 +41,7 @@ const DoctorCard = ({ item, navigation }: any) => {
                         otherStyles={{ fontFamily: "Roboto-Bold", color: APP_GREEN, fontSize: 7, marginTop: 0 }}
                     />
                     <AnicureText
-                        text={item.availability ?? ""}
+                        text={item.isConfirmed ? "ONLINE" : "OFFLINE"}
                         type="subTitle"
                         left
                         otherStyles={{ color: APP_GREEN, fontSize: 7, marginTop: 0, textAlign: "left", }}
@@ -51,7 +50,7 @@ const DoctorCard = ({ item, navigation }: any) => {
             </View>
             <View style={{ flex: 1, marginLeft: 15 }}>
                 <AnicureText
-                    text={item.name}
+                    text={item.fullName}
                     type="title"
                     otherStyles={{ color: "#1F1742", fontSize: 20, textAlign: "left" }}
                 />
@@ -62,7 +61,7 @@ const DoctorCard = ({ item, navigation }: any) => {
                 />
                 <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
                     <AnicureText
-                        text="5.0"
+                        text={`${item.rating}.0`}
                         type="title"
                         otherStyles={{ fontSize: 10, color: "#0F0F0F" }}
                     />
@@ -74,7 +73,7 @@ const DoctorCard = ({ item, navigation }: any) => {
                     />
                 </View>
                 <View style={{ width: "100%", flexDirection: "row" }}>
-                    <ImageTextRow status="location" text={item.location} 
+                    <ImageTextRow status="location" text={`${item.location.lga} ${item.location.state}`}
                     // distance="1.3 Km from you" 
                     />
                     <ImageTextRow status="wallet" text={`N${item.chargePerSession}/session`} />

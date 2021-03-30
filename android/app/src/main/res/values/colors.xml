@@ -3,5 +3,6 @@
 <resources>
     <color name="purple">#5951AA</color>
     <color name="background">#fff</color>
+    <color name="white">#FFF</color>
     <color name="primary_dark">#000</color>
 </resources>

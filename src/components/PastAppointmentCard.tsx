@@ -6,29 +6,33 @@ import Rating from './Rating'
 
 interface IPastAppointmentCard {
     onPress: () => void
+    item: any
 }
 
 const PastAppointmentCard = ({
-onPress
+    onPress,
+    item,
 }: IPastAppointmentCard) => {
+
+    const { doctor, schedule } = item;
     return (
         <>
-            <TouchableOpacity 
-            onPress={onPress}
-            style={{ flexDirection: "row", backgroundColor: "#FFFFFF", padding: 10 }}>
+            <TouchableOpacity
+                onPress={onPress}
+                style={{ flexDirection: "row", backgroundColor: "#FFFFFF", padding: 10 }}>
                 <Image
-                    source={require("../assets/svg/profile.png")}
+                    source={{uri: doctor.photo}}
                     style={{ width: 75, height: 75, borderRadius: 10, marginRight: 10, marginBottom: 10 }}
-                    resizeMode="contain"
+                    resizeMode="cover"
                 />
                 <View>
                     <AnicureText
-                        text={"Doc 1"}
+                        text={doctor.fullName}
                         type="title"
                         otherStyles={{ color: "#1F1742", fontSize: 20, textAlign: "left" }}
                     />
                     <AnicureText
-                        text="Vet. Surgeon"
+                        text={doctor.title}
                         type="title"
                         otherStyles={{ color: "#216B36", fontSize: 15, textAlign: "left" }}
                     />
@@ -41,7 +45,8 @@ onPress
                         <Rating rating={4} />
                     </View>
                     <AnicureText
-                        text="Amazing Session. Money well spent"
+                        text="Review"
+                        left
                         type="title"
                         otherStyles={{ fontSize: 10, color: "#ADADAD", fontFamily: "Roboto-Regular" }}
                     />

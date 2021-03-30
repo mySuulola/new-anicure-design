@@ -11,42 +11,63 @@ import commonStyling from '../../styles/GeneralStyling';
 import SuccessModal from '../../components/SuccessModal'
 import { updateUserDetail } from '../../store/actions/userAction'
 import { connect } from 'react-redux';
+import apiFetch from '../../utils/apiFetch'
+import { logError } from '../../utils/helpers'
 
 
 
-const CreateFarm = ({ navigation, updateUserDetail }: any) => {
+const CreateFarm = ({ navigation, route, updateUserDetail }: any) => {
+
+    const { mobileNumber } = route.params;
 
     const [farmName, setFarmName] = useState({ value: "", error: "" });
     const [farmAddress, setFarmAddress] = useState({ value: "", error: "" });
-    const [country, setCountry] = useState({ value: "", error: "" });
+    const [localGovernment, setLocalGovernment] = useState({ value: "", error: "" });
     const [stateProvince, setStateProvince] = useState({ value: "", error: "" });
+
     const [isLoading, setIsLoading] = useState(false);
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState({ value: false, payload: "" })
+    const [generalError, setGeneralError] = useState("");
 
     const handleCreateFarm = async () => {
-        setIsLoading(true);
+        try {
+            setIsLoading(true);
 
-        // VALIDATIONS
-        const farmNameError = farmNameValidation(farmName, setFarmName);
-        const farmAddressError = farmAddressValidation(farmAddress, setFarmAddress);
-        const countryError = farmNameValidation(country, setCountry);
-        const stateError = farmNameValidation(stateProvince, setStateProvince);
+            // VALIDATIONS
+            const farmNameError = farmNameValidation(farmName, setFarmName);
+            const farmAddressError = farmAddressValidation(farmAddress, setFarmAddress);
+            const localGovernmentError = farmNameValidation(localGovernment, setLocalGovernment);
+            const stateError = farmNameValidation(stateProvince, setStateProvince);
 
-        if (farmNameError || farmAddressError || countryError || stateError) {
-            setIsLoading(false)
-            return;
+            if (farmNameError || farmAddressError || localGovernmentError || stateError) {
+                setIsLoading(false)
+                return;
+            }
+            //TODO: API to register user and send OTP
+            const requestModel = {
+                mobileNumber,
+                name: farmName.value,
+                address: farmAddress.value,
+                state: stateProvince.value,
+                localGovernment: localGovernment.value
+            }
+            const networkRequest: any = await apiFetch.post("users/register/farm", requestModel);
+            if (networkRequest.status === true) {
+                setIsLoading(false)
+                setIsModalOpen({ value: true, payload: networkRequest.data });
+                return;
+            }
+            logError(networkRequest, setGeneralError, setIsLoading);
+        } catch (error) {
+            logError(error, setGeneralError, setIsLoading);
         }
-        //TODO: API to register user and send OTP
-
-        setIsLoading(false)
-        setIsModalOpen(true);
-        //   navigation.push("CreateFarm")
     };
 
-    const navigateToDashboard = () => {
-        setIsModalOpen(false);
-        updateUserDetail({ email: "abc", username: "123" });
+    const navigateToDashboard = async () => {
+        console.log(isModalOpen.payload, '****')
+        await updateUserDetail({ userDetail: isModalOpen.payload });
+        // setIsModalOpen({value: false, payload: ""});
     }
 
 
@@ -73,6 +94,12 @@ const CreateFarm = ({ navigation, updateUserDetail }: any) => {
 
                     <View style={commonStyling.cardContainer}>
                         <View style={commonStyling.registrationWhiteSheet}>
+
+                            <AnicureText
+                                text={generalError}
+                                type="error"
+                            />
+
                             <FormInput
                                 labelName="Farm Name"
                                 value={farmName.value}
@@ -89,17 +116,17 @@ const CreateFarm = ({ navigation, updateUserDetail }: any) => {
                             />
 
                             <FormInput
-                                labelName="Country"
-                                value={country.value}
-                                error={country.error}
-                                onChangeText={(text: string) => setCountry({ value: text, error: country.error })}
-                            />
-
-                            <FormInput
-                                labelName="State/Province"
+                                labelName="State of Residence"
                                 value={stateProvince.value}
                                 error={stateProvince.error}
                                 onChangeText={(text: string) => setStateProvince({ value: text, error: stateProvince.error })}
+                            />
+
+                            <FormInput
+                                labelName="Local Government"
+                                value={localGovernment.value}
+                                error={localGovernment.error}
+                                onChangeText={(text: string) => setLocalGovernment({ value: text, error: localGovernment.error })}
                             />
 
                             {(isLoading == false) ? (
@@ -122,8 +149,9 @@ const CreateFarm = ({ navigation, updateUserDetail }: any) => {
                         description="Farm Created Successfully"
                         onClose={navigateToDashboard}
                         actionPress={navigateToDashboard}
-                        modalState={isModalOpen}
+                        modalState={isModalOpen.value}
                         actionText="Go To Dashboard"
+                        operationType="rejoice"
                     />
                 </View>
             </ScrollView>

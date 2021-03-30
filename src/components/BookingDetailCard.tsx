@@ -24,9 +24,9 @@ const BookingDetailCard = ({ label, value, imageType, onPress, otherStyles }: IB
                 </View>
                 <TouchableOpacity onPress={onPress}>
                     <Image
-                        source={imageType === "calender" ? require("../assets/svg/chat.png") : require("../assets/svg/dropdown.png")}
+                        source={imageType === "calender" ? require("../assets/images/calender.png") : require("../assets/images/dropdown_new.png")}
                         resizeMode="contain"
-                        style={styles.image}
+                        style={imageType === "calender" ? styles.calenderImg : styles.dropdownImg}
                     />
                 </TouchableOpacity>
             </View>
@@ -39,7 +39,7 @@ export default BookingDetailCard
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 10,
+        // paddingHorizontal: 10,
     },
     row: {
         flexDirection: "row",
@@ -55,8 +55,13 @@ const styles = StyleSheet.create({
         color: "#000000",
         fontFamily: "Roboto-Bold"
     },
-    image: {
-        width: 20,
+    dropdownImg: {
+        width: 15,
+        height: 20,
+        marginRight: 5,
+    },
+    calenderImg: {
+        width: 30,
         height: 20
     },
     divider: {

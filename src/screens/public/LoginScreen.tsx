@@ -14,30 +14,67 @@ import { updateUserDetail } from '../../store/actions/userAction';
 import Appbar from '../../components/Appbar';
 import AnicureText from '../../components/AnicureText';
 import AnicureButton from '../../components/AnicureButton';
-import { emailValidation, passwordValidation } from '../../utils/validation';
+import { mobileNumberValidation, passwordValidation } from '../../utils/validation';
 import { APP_GREEN } from '../../utils/constant';
+import apiFetch from '../../utils/apiFetch';
+import { logError } from '../../utils/helpers';
 
 const { height, width } = Dimensions.get('screen');
 
 const LoginScreen = ({ navigation, updateUserDetail }: any) => {
-  const [email, setEmail] = useState({ value: "", error: "" });
+
+  const [mobileNumber, setMobileNumber] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [isLoading, setIsLoading] = useState(false);
-
+  const [generalError, setGeneralError] = useState("");
 
   const handleLogin = async () => {
-    setIsLoading(true)
 
-    const emailError = emailValidation(email, setEmail);
-    const passwordError = passwordValidation(password, setPassword);
+    // navigation.push("CreateFarm", { mobileNumber: mobileNumber.value });
+    // return;
+    ////
 
-    if (emailError || passwordError) {
-      setIsLoading(false)
-      return;
+    try {
+      setGeneralError("");
+      setIsLoading(true)
+
+      const mobileNumberError = mobileNumberValidation(mobileNumber, setMobileNumber);
+      const passwordError = passwordValidation(password, setPassword);
+
+      if (mobileNumberError || passwordError) {
+        setIsLoading(false)
+        return;
+      }
+      // API
+      const requestModel = { mobileNumber: mobileNumber.value, password: password.value }
+      const requestLogin: any = await apiFetch.post("users/login/", requestModel);
+
+
+      if (requestLogin.status && requestLogin.data) {
+        await updateUserDetail({ userDetail: requestLogin.data });
+        return;
+      }
+      logError(requestLogin, setGeneralError, setIsLoading);
+    } catch (error) {
+      try {
+        if (error?.data?.data === 'notConfirmed') {
+          const networkRequest: any = await apiFetch.post("users/otp/resend", { mobileNumber: mobileNumber.value });
+          if (networkRequest.status === true) {
+            navigation.push("VerifyPhoneNumber", { mobileNumber: mobileNumber.value });
+            return;
+          }
+          logError(error, setGeneralError, setIsLoading);
+          return;
+        } else if (error?.data?.data === "noUserData") {
+          navigation.push("AddProfileDetails", { mobileNumber: mobileNumber.value });
+        } else if (error?.data?.data === "noFarmData") {
+          navigation.push("CreateFarm", { mobileNumber: mobileNumber.value });
+        }
+        logError(error, setGeneralError, setIsLoading);
+      } catch (error) {
+        logError(error, setGeneralError, setIsLoading);
+      }
     }
-    // API
-    setIsLoading(false)
-    await updateUserDetail({ email, username: "" });
   };
 
   return (
@@ -60,16 +97,20 @@ const LoginScreen = ({ navigation, updateUserDetail }: any) => {
           otherStyles={{ fontFamily: "Roboto-Medium", width: "100%", textAlign: "left", marginTop: 40, marginBottom: 10, paddingHorizontal: 20, fontSize: 15 }}
         />
 
-        <View style={{ minHeight: 300, width: "100%", backgroundColor: "#FFFFFF", borderRadius: 10, paddingHorizontal: 20, paddingVertical: 50, }}>
-
+        <View style={{ minHeight: 300, width: "100%", backgroundColor: "#FFFFFF", borderRadius: 10, paddingHorizontal: 20, paddingVertical: 30, }}>
+          <AnicureText
+            text={generalError}
+            type="error"
+          />
           <FormInput
             preIcon={"user"}
-            value={email.value}
-            error={email.error}
+            value={mobileNumber.value}
+            error={mobileNumber.error}
             autoCapitalize="none"
-            keyboardType="email-address"
-            placeholder="Email"
-            onChangeText={(userEmail: string) => setEmail({ value: userEmail, error: email.error })}
+            keyboardType="numeric"
+            maxLength={11}
+            placeholder="Mobile Number"
+            onChangeText={(text: string) => setMobileNumber({ value: text, error: mobileNumber.error })}
           />
 
           <FormInput
@@ -142,12 +183,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: any) => {
-  console.log(state.error.authError)
-  console.log('=============')
-  return ({
-    error: state.error.authError,
-  })
-};
 
-export default connect(mapStateToProps, { updateUserDetail })(LoginScreen);
+export default connect(null, { updateUserDetail })(LoginScreen);

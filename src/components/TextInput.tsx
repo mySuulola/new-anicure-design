@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { KeyboardTypeOptions, Dimensions } from 'react-native';
+import { KeyboardTypeOptions, Dimensions, Image, ImageSourcePropType } from 'react-native';
 import { TextInput, StyleSheet, View, Text } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,6 +19,7 @@ interface IAnicureTextInput {
     maxLength?: number,
     secureTextEntry?: boolean
     width?: any,
+    imageSource?: ImageSourcePropType,
 }
 
 const AnicureTextInput = ({
@@ -34,17 +35,22 @@ const AnicureTextInput = ({
     maxLength,
     secureTextEntry,
     width,
+    imageSource,
 }: IAnicureTextInput) => {
 
     const [isValid, setIsValid] = useState(false)
     return (
         <>
-            <View style={[styles.container, {width: width ?? "80%"}]}>
+            <View style={[styles.container, { width: width ?? "80%" }]}>
                 {decoratorIcon && <Icon
                     name={decoratorIcon}
                     size={25}
                     color={"black"}
                     style={styles.px7}
+                />}
+                {imageSource && <Image
+                    source={imageSource}
+                    style={{ width: 30, height: 20, marginRight: 10, marginLeft: 5 }}
                 />}
                 <TextInput
                     secureTextEntry={secureTextEntry}
@@ -83,6 +89,7 @@ const AnicureTextInput = ({
 const styles = StyleSheet.create({
     flex: {
         flex: 1,
+        fontFamily: "Roboto-Regular",
     },
     container: {
         backgroundColor: "#fff",
@@ -90,6 +97,7 @@ const styles = StyleSheet.create({
         borderColor: "#707070",
         borderRadius: 12,
         alignItems: 'center',
+        marginBottom: 10,
         flexDirection: 'row',
         paddingHorizontal: 7,
     },

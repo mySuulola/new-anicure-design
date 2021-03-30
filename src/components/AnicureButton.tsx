@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Text } from 'react-native'
+import { TouchableOpacity, Text, StyleProp, ViewStyle } from 'react-native'
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 type StatusType = "up" | "down";
@@ -13,7 +13,7 @@ interface IAnicureButton {
     cancelBtn?: boolean,
     boldText?: boolean,
     btnColor?: string,
-    otherStyles?: Object,
+    otherStyles?: StyleProp<ViewStyle>,
     fontSize ?: number,
     icon?: string,
     iconColor?: string,
@@ -72,8 +72,6 @@ const AnicureButton = ({
           // style={{marginRight: 5}}
         />
         }
-
-
       </TouchableOpacity>
     )
 }

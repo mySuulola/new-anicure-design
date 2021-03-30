@@ -8,24 +8,24 @@ import { ScrollView } from 'react-native';
 
 const startingProcess = [
     {
-        image: require("../../assets/svg/verification.png"),
+        image: require("../../assets/images/register_phone.png"),
         text: "Register Your Phone Number",
         top: false,
         bottom: true
     },
     {
-        image: require("../../assets/svg/profile.png"),
+        image: require("../../assets/images/add_profile.png"),
         text: "Add Profile Details",
         top: true,
         bottom: true
     },
     {
-        image: require("../../assets/svg/farm.png"),
+        image: require("../../assets/images/create_farm.png"),
         text: "Create Your Farm",
         top: true,
         bottom: false
     },
-]
+];
 
 const CreateAccount = ({ navigation }: any) => {
     return (

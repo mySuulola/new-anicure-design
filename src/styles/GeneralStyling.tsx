@@ -10,7 +10,7 @@ const commonStyling = StyleSheet.create({
     registrationWhiteSheet: {
         width: "100%",
         backgroundColor: "#fff",
-        paddingVertical: 20,
+        paddingBottom: 20,
         paddingHorizontal: 20,
         borderRadius: 10
     },

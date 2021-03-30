@@ -3,6 +3,10 @@ import { StyleSheet, View, Image, Text, TouchableOpacity, TextInput, KeyboardTyp
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { APP_GREEN } from '../utils/constant';
+import { Picker } from '@react-native-picker/picker';
+
+type StatusTypes = "dropdown" | "text";
+type PickerModeType = "dropdown" | "dialog";
 
 interface IFormInput {
   labelName?: string,
@@ -10,17 +14,24 @@ interface IFormInput {
   textarea?: boolean,
   icon?: string,
   value?: string,
+  selectedValue?: string,
   autoCapitalize?: any,
   keyboardType?: KeyboardTypeOptions,
   onChangeText?: any,
+  onValueChange?: any,
   secureTextEntry?: boolean,
   onPress?: any,
   searchButton?: any,
   inLineButton?: boolean,
+  maxLength?: number,
   disabled?: boolean,
   placeholder?: string,
   error?: string,
   preIcon?: string,
+  type?: StatusTypes,
+  options?: Array<{ name: string, value: string }>,
+  pickerMode?: PickerModeType,
+  containerStyle?: any,
 }
 
 const FormInput = ({
@@ -32,10 +43,15 @@ const FormInput = ({
   secureTextEntry,
   onPress,
   disabled,
+  maxLength,
   error,
   preIcon,
   placeholder,
   searchButton,
+  pickerMode,
+  options,
+  type,
+  containerStyle,
   ...rest
 }: IFormInput) => {
 
@@ -46,9 +62,10 @@ const FormInput = ({
       { (labelName !== undefined && labelName !== "") && <Text style={styles.label}>{labelName}</Text>}
       <View style={[styles.textContainer, {
         borderRadius: inLineButton ? 0 : 10,
+        height: textarea ? 120 : 50,
         borderWidth: inLineButton ? 0.3 : searchButton ? 0 : 1,
         opacity: inLineButton ? 1 : 0.6,
-        backgroundColor: searchButton ? "#FFFFFF" : 'transparent', 
+        backgroundColor: searchButton ? "#FFFFFF" : 'transparent',
       }]}>
         {(preIcon && preIcon.length > 2) &&
           <AntDesignIcon
@@ -58,18 +75,36 @@ const FormInput = ({
           />
 
         }
-        <TextInput
-          {...rest}
-          editable
-          placeholder={placeholder}
-          placeholderTextColor={"#1F1742"}
-          secureTextEntry={showPassword ? false : secureTextEntry}
-          // maxLength={40}
-          style={[styles.input,
-          {
-            width: inLineButton ? "85%" : "85%",
-          }]}
-        />
+        {
+          (type === "dropdown" && options) ?
+            <Picker
+              // prompt="Send To"
+              dropdownIconColor={APP_GREEN}
+              itemStyle={styles.pickerItem}
+              style={styles.picker}
+              mode={pickerMode ?? "dialog"}
+              {...rest}
+            >
+              {options.map((item: { name: string, value: string }) => (
+                <Picker.Item key={item.value} label={item.name} value={item.value} />
+              ))}
+            </Picker>
+            :
+            <TextInput
+              {...rest}
+              editable
+              multiline={textarea}
+              placeholder={placeholder}
+              placeholderTextColor={"#1F1742"}
+              secureTextEntry={showPassword ? false : secureTextEntry}
+              maxLength={maxLength ? maxLength : textarea ? 200 : 50}
+              style={[styles.input,
+              {
+                textAlignVertical: textarea ? "top" : "center",
+                height: "100%",
+                width: inLineButton ? "85%" : "85%",
+              }]}
+            />}
         {
           (inLineButton || icon) && (
             <TouchableOpacity
@@ -86,10 +121,10 @@ const FormInput = ({
                 } else { }
               }}>
               {
-                inLineButton ? <MaterialCommunityIcon
-                  name={"arrow-right"}
-                  size={25}
-                  color="#FFFFFF"
+                inLineButton ? <Image 
+                source={require("../assets/images/chat_send_button.png")}
+                resizeMode="contain"
+                style={{width: 20, height: 20}}
                 />
                   :
                   icon === "password" ?
@@ -145,6 +180,14 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     fontFamily: "Roboto-Italic",
     marginBottom: 10,
+  },
+  pickerItem: {
+    fontFamily: "Roboto-Regular",
+  },
+  picker: {
+    width: "100%",
+    fontFamily: "Roboto-Regular",
+    color: "#000000",
   },
   passwordImage: {
     width: 20,

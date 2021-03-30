@@ -5,56 +5,53 @@ import {
   Dimensions,
   View,
   ScrollView,
+  TouchableOpacity,
   Image,
+  ToastAndroid,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { connect } from 'react-redux';
 import AnicureText from '../../components/AnicureText';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import DashboardTextHighlights from '../../components/DashboardTextHighlights';
-import { userLogout } from '../../store/actions/userAction';
-
+import AnicureButton from '../../components/AnicureButton';
+import { minuteSecond, monthDayYear } from '../../utils/helpers';
 
 
 const dashboardSummary = [
   {
-    title: "Pens",
-    count: 4,
-    header: "Total",
-    summary: "40 broilers \n 30 layers \n 35 feeders",
+    title: "Farm Record",
+    header: "Manage farm data",
+    summary: "",
     image: require("../../assets/svg/pents.png"),
   },
   {
     title: "Vaccine Tracker",
-    count: 4,
-    header: "Last Vaccination",
-    summary: "15/10/2020",
-    image: require("../../assets/svg/inoculate.png"),
+    header: "Next Vaccination",
+    summary: monthDayYear(),
+    image: require("../../assets/images/vaccine_tracker.png"),
   },
   {
     title: "Analytics",
-    count: 4,
-    header: "",
-    summary: "View Farm Analytics for the month",
-    image: require("../../assets/svg/analytics.png"),
+    header: "View Farm Analytics for the month",
+    summary: "",
+    image: require("../../assets/images/analytics.png"),
   },
   {
     title: "Create New",
-    count: 4,
     header: "",
-    summary: "Create New farm/pen",
-    image: require("../../assets/svg/analytics.png"),
+    summary: "",
+    image: require("../../assets/images/create_new.png"),
   },
-  
+
 ]
 
 const { height, width } = Dimensions.get('screen');
 
-const HomeScreen = ({ navigation, userLogout }: any) => {
+const HomeScreen = ({ navigation, fullName }: any) => {
 
   return (
     <View style={styles.container}>
-
-      {/* TOP BAR */}
       <View style={[styles.row, { justifyContent: "space-between", alignItems: "center", paddingHorizontal: 30, paddingVertical: 10 }]}>
         <View style={[styles.row, { alignItems: "center", height: 37, marginVertical: 50, }]}>
           <Image
@@ -70,23 +67,25 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
           />
           <View>
             <AnicureText type="title" text="Welcome" otherStyles={{ fontSize: 20, color: "#216B36", textAlign: "left" }} />
-            <AnicureText type="subTitle" text="Oluwaseyi Suulola" otherStyles={{ color: "#216B36", fontSize: 16 }} />
+            <AnicureText type="subTitle" text={fullName} otherStyles={{ color: "#216B36", fontSize: 16 }} />
           </View>
         </View>
         <IoniconsIcon
           name={"ios-notifications"}
           size={25}
           color="#0F0F0F"
-          onPress={() => userLogout()}
+          onPress={() => { }}
         />
       </View>
       {/* END OF TOP ROW */}
-      <View style={{
-        backgroundColor: "#216B36",
-        flex: 1,
-        borderRadius: 30
-      }}>
-
+      <LinearGradient
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 1, y: 0.5 }}
+        colors={['#216B36', '#11361B']}
+        style={{
+          flex: 1,
+          borderRadius: 30
+        }}>
         <View style={{
           width: "100%",
           flexDirection: "row",
@@ -94,20 +93,19 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
           paddingTop: 20
         }}>
           <DashboardTextHighlights
-            count={4}
+            count={0}
             description="Total Pens"
           />
           <DashboardTextHighlights
-            count={4}
+            count={0}
             middle={true}
             description="Animal Categories"
           />
           <DashboardTextHighlights
-            count={24}
+            count={0}
             description="Total Stock"
           />
         </View>
-
         <View style={{
 
           flex: 1,
@@ -120,7 +118,7 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
 
         }}>
           <ScrollView
-          showsVerticalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
           >
             <AnicureText
               type="title"
@@ -128,76 +126,84 @@ const HomeScreen = ({ navigation, userLogout }: any) => {
               otherStyles={{ marginTop: 10, color: "#1F1742", textAlign: "left", fontFamily: "Roboto-Medium", fontSize: 20 }}
             />
 
-            <ScrollView 
-            // contentContainerStyle={{flex: 1}}
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}>
+            <ScrollView
+              // contentContainerStyle={{flex: 1}}
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}>
               {dashboardSummary.map(item => (
-                 <View  
-                 key={item.title}
-                 style={{
-                  minHeight: 151,
-                  minWidth: 150,
-                  backgroundColor: "#FFFFFF",
-                  marginRight: 15,
-                  alignItems: "center",
-                  paddingHorizontal: 20,
-                  paddingBottom: 10,
-                  paddingTop: 30,
-                  marginTop: 20,
-                  borderRadius: 10
-                }}>
-                  <Image 
-                  source={item.image}
-                  accessibilityHint="pent"
-                  style={{width: 70, height: 70}}
-                  resizeMode="cover"
+                <TouchableOpacity
+                  key={item.title}
+                  onPress={() => {
+                    ToastAndroid.show("Coming Soon", ToastAndroid.SHORT);
+
+                  }}
+                  // onPress={() =>  navigation.navigate("AppointmentForm", {payload: { selectedPeriod: {time: minuteSecond(), date: monthDayYear()  } }})  }
+                  style={{
+                    minHeight: 151,
+                    width: 180,
+                    backgroundColor: "#FFFFFF",
+                    marginRight: 15,
+                    alignItems: "center",
+                    paddingHorizontal: 20,
+                    paddingBottom: 10,
+                    paddingTop: 30,
+                    marginTop: 20,
+                    borderRadius: 10
+                  }}>
+                  <Image
+                    source={item.image}
+                    accessibilityHint={item.title}
+                    style={{ width: 84, height: 84 }}
+                    resizeMode="cover"
                   />
-                  <AnicureText 
-                  text={`${item.title}`}
-                  type="title"
-                  otherStyles={{ fontSize: 14, marginVertical: 4}}
+                  <AnicureText
+                    text={`${item.title}`}
+                    type="title"
+                    otherStyles={{ fontSize: 14, marginBottom: 4, marginTop: 10 }}
                   />
 
-                  <AnicureText 
-                  text={`${item.header} ${item.summary}`}
-                  type="subTitle"
-                  
-                  otherStyles={{textAlign: "center", color: "#619E42", maxWidth: 130}}
-                  />
-                </View>
+                  <View>
+                    <AnicureText
+                      text={`${item.header} `}
+                      type="subTitle"
+                      otherStyles={{ fontFamily: "Roboto-Bold", color: "#619E42", maxWidth: 130 }}
+                    />
+                    <AnicureText
+                      text={`${item.summary}`}
+                      type="subTitle"
+                      // left
+                      otherStyles={{ color: "#619E42", maxWidth: 130 }}
+                    />
+                  </View>
+                </TouchableOpacity>
               ))}
             </ScrollView>
-            <View style={{
-              height: 200,
-              width: "100%",
-              backgroundColor: "#00000067",
-              marginTop: 20,
-              marginBottom: 30,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 10
-            }}>
-              <AnicureText 
-              type="title"
-              text="Image Here"
+            <View>
+              <Image
+                source={require("../../assets/svg/consult_poster.png")}
+                style={{ height: 220, width: "100%" }}
+                resizeMode="contain"
               />
-
+              <AnicureButton
+                title="Call Now"
+                onPress={() => navigation.navigate("Search")}
+                fontSize={10}
+                otherStyles={{ position: "absolute", bottom: 75, left: 15, width: 60, height: 30, borderRadius: 5 }}
+              />
             </View>
           </ScrollView>
         </View>
-      </View>
+      </LinearGradient>
+
     </View>
   ); //just kind loving humble
 };
 
-const mapStateToProps = (state: any) => {
-  console.log(state);
-  // const {fullName, phoneNumber, email} =  state.user.userDetail.userDetail
-  return {}
-};
+const mapStateToProps = (state: any) => ({
+  fullName: state.user.userDetail.fullName
+});
 
-export default connect(mapStateToProps, { userLogout })(HomeScreen);
+export default connect(mapStateToProps)(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {

@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "562589126395",
+    "firebase_url": "https://anicure-001.firebaseio.com",
+    "project_id": "anicure-001",
+    "storage_bucket": "anicure-001.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562589126395:android:c79df95c67378d3756ea5e",
+        "android_client_info": {
+          "package_name": "com.anicure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "562589126395-vel37ron39a7j3obhtcu8lkhamqo0rhr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRfJu3qTp-NfthdYZMh50XycUlCEn82JY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "562589126395-vel37ron39a7j3obhtcu8lkhamqo0rhr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562589126395:android:1c1a378fe591158b56ea5e",
+        "android_client_info": {
+          "package_name": "com.vetmail"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "562589126395-vel37ron39a7j3obhtcu8lkhamqo0rhr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRfJu3qTp-NfthdYZMh50XycUlCEn82JY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "562589126395-vel37ron39a7j3obhtcu8lkhamqo0rhr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

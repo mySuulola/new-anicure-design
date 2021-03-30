@@ -7,24 +7,26 @@ import {
 
 const initialUserState = {
   loggedIn: false,
-  userDetail: {}
+  userDetail: null
 };
 
-const userReducer = (state = initialUserState, action) => {
+const userReducer = (state = initialUserState, action: any) => {
   console.log('----------------')
-  console.log(action)
+  console.log(action.payload)
   console.log('----------------')
   switch (action.type) {
     case UPDATE_USER_DETAIL:
+      console.log('UPDATE_USER_DETAIL', action.payload)
       return {
         ...state,
         loggedIn: true,
-        userDetail: action.payload
+        userDetail: action.payload.userDetail
       };
     case USER_LOGOUT:
       return {
         ...state,
         loggedIn: false,
+        userDetail: null
       };
     default:
       return state;

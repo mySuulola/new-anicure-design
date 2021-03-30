@@ -8,35 +8,58 @@ import FormInput from '../../components/FormInput'
 import { APP_GREEN } from '../../utils/constant'
 import { passwordValidation, emailValidation, confirmPasswordValidation, fullNameValidation } from '../../utils/validation'
 import commonStyling from '../../styles/GeneralStyling';
+import apiFetch from '../../utils/apiFetch'
+import { logError } from '../../utils/helpers'
 
-const AddProfileDetails = ({ navigation }: any) => {
+const AddProfileDetails = ({ navigation, route }: any) => {
+
+    const { mobileNumber } = route.params;
 
     const [fullName, setFullName] = useState({ value: "", error: "" });
     const [email, setEmail] = useState({ value: "", error: "" });
     const [password, setPassword] = useState({ value: "", error: "" });
     const [confirmPassword, setConfirmPassword] = useState({ value: "", error: "" });
     const [isLoading, setIsLoading] = useState(false);
+    const [generalError, setGeneralError] = useState("");
 
     const handleRegistration = async () => {
-        setIsLoading(true);
 
-        // VALIDATIONS
-        const emailError = emailValidation(email, setEmail);
-        const passwordError = passwordValidation(password, setPassword);
-        const confirmPasswordError = confirmPasswordValidation(password.value, confirmPassword, setConfirmPassword);
-        const fullNameError = fullNameValidation(fullName, setFullName);
+        try {
+            setIsLoading(true);
 
-        if (emailError || passwordError || confirmPasswordError || fullNameError) {
-            setIsLoading(false)
-            return;
+            // VALIDATIONS
+            const emailError = emailValidation(email, setEmail);
+            const passwordError = passwordValidation(password, setPassword);
+            const confirmPasswordError = confirmPasswordValidation(password.value, confirmPassword, setConfirmPassword);
+            const fullNameError = fullNameValidation(fullName, setFullName);
+
+            if (emailError || passwordError || confirmPasswordError || fullNameError) {
+                setIsLoading(false)
+                return;
+            }
+            //TODO: API to register user and send OTP
+            setIsLoading(false);
+
+            const requestModel = {
+                mobileNumber,
+                email: email.value,
+                password: password.value,
+                fullName: fullName.value
+            }
+            const networkRequest: any = await apiFetch.post("users/register/user", requestModel);
+            if (networkRequest.status === true) {
+                navigation.push("CreateFarm", { mobileNumber });
+                return;
+            }
+            logError(networkRequest, setGeneralError, setIsLoading);
+
+        } catch (error) {
+            logError(error, setGeneralError, setIsLoading);
         }
-        //TODO: API to register user and send OTP
-        setIsLoading(false)
-        navigation.push("CreateFarm")
     };
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
             <Appbar navigation={navigation} back={true} title="Step 2/3" />
             <ScrollView>
                 <View style={commonStyling.registrationContainer} >
@@ -58,6 +81,11 @@ const AddProfileDetails = ({ navigation }: any) => {
 
                     <View style={commonStyling.cardContainer}>
                         <View style={commonStyling.registrationWhiteSheet}>
+
+                            <AnicureText
+                                text={generalError}
+                                type="error"
+                            />
                             <FormInput
                                 labelName="Full Name"
                                 value={fullName.value}

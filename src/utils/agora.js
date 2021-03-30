@@ -42,7 +42,6 @@ export const useInitializeAgora = () => {
         if (peerIdsLocal.indexOf(uid) === -1) {
           return [...peerIdsLocal, uid];
         }
-
         return peerIdsLocal;
       });
     });

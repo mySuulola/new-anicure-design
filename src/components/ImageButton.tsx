@@ -13,6 +13,7 @@ const ImageButton = ({ onPress, imageSource, imageStyle }: IButton) => {
             <Image
                 source={imageSource}
                 style={[styles.image, imageStyle]}
+                resizeMode="contain"
             />
         </TouchableOpacity>
     )

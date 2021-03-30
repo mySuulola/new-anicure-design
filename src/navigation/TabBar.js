@@ -11,11 +11,11 @@ const TabBar = ({ state, descriptors, navigation }) => {
                 const { options } = descriptors[route.key];
                 let iconName;
                 route.name === 'Home' ?
-                    iconName = 'waveform' :
+                    iconName = 'rhombus-split' :
                     route.name === 'Search' ?
                         iconName = 'text-search' :
                         route.name === 'Appointment' ?
-                            iconName = 'home' :
+                            iconName = 'timetable' :
                                 iconName = 'dots-horizontal-circle-outline';
 
                 const isFocused = state.index === index;
@@ -46,7 +46,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
                         <AnicureText 
                         text={route.name === "Home" ? "Activities" : route.name}
                         type="subTitle"
-                        otherStyles={{ color: isFocused ? '#216B36' : '#8d8989e6', fontFamily: "Roboto-Medium" }}
+                        otherStyles={{ color: isFocused ? '#216B36' : '#8d8989e6', fontFamily: "Roboto-Medium", marginVertical: 0 }}
                         />
                     </TouchableOpacity>
                 );

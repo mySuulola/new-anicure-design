@@ -24,7 +24,7 @@ const Appbar = ({
     return (
         <View style={[styles.row, styles.container]}>
             <View style={styles.row}>
-                {(back && navigation) &&
+                {(back && navigation) ?
                     <TouchableOpacity
                         style={[styles.ml, { marginBottom: margin ? 20 : 0 }]}
                         onPress={() => navigation.goBack()}>
@@ -32,7 +32,7 @@ const Appbar = ({
                             source={require("../assets/svg/back_arrow.png")}
                             style={{ width: 15, height: 13, }}
                         />
-                    </TouchableOpacity>}
+                    </TouchableOpacity> : <View style={styles.ml} /> }
                 {(!children && title) && <Text
                     style={{
                         fontSize: 15,

@@ -34,7 +34,7 @@ const TopDoctorDetails = ({
                 justifyContent: "space-between",
 
             }]}>
-                <View>
+                <View >
                     <AnicureText
                         text={name}
                         type="title"
@@ -54,7 +54,7 @@ const TopDoctorDetails = ({
                     />
                 </View>
                 <AnicureText
-                    text={`${reviewCount} Reviews`}
+                    text={`${reviewCount ?? '-'} Reviews`}
                     type="subTitle"
                     otherStyles={{ color: "#ADADAD", fontSize: 10, fontFamily: "Roboto-Bold", marginRight: 5 }}
                 />
