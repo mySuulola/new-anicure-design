@@ -38,7 +38,7 @@ const dashboardSummary = [
     image: require("../../assets/images/analytics.png"),
   },
   {
-    title: "Create New",
+    title: "Health Record",
     header: "",
     summary: "",
     image: require("../../assets/images/create_new.png"),
@@ -139,14 +139,15 @@ const HomeScreen = ({ navigation, fullName }: any) => {
                   }}
                   // onPress={() =>  navigation.navigate("AppointmentForm", {payload: { selectedPeriod: {time: minuteSecond(), date: monthDayYear()  } }})  }
                   style={{
-                    minHeight: 151,
-                    width: 180,
+                    minHeight: 131,
+                    width: 160,
+                    minWidth: width / 4,
                     backgroundColor: "#FFFFFF",
                     marginRight: 15,
                     alignItems: "center",
                     paddingHorizontal: 20,
                     paddingBottom: 10,
-                    paddingTop: 30,
+                    paddingTop: 20,
                     marginTop: 20,
                     borderRadius: 10
                   }}>
@@ -159,7 +160,7 @@ const HomeScreen = ({ navigation, fullName }: any) => {
                   <AnicureText
                     text={`${item.title}`}
                     type="title"
-                    otherStyles={{ fontSize: 14, marginBottom: 4, marginTop: 10 }}
+                    otherStyles={{ fontSize: 14, marginBottom: 4, marginTop: 8 }}
                   />
 
                   <View>
@@ -168,12 +169,12 @@ const HomeScreen = ({ navigation, fullName }: any) => {
                       type="subTitle"
                       otherStyles={{ fontFamily: "Roboto-Bold", color: "#619E42", maxWidth: 130 }}
                     />
-                    <AnicureText
+                    {/* <AnicureText
                       text={`${item.summary}`}
                       type="subTitle"
                       // left
                       otherStyles={{ color: "#619E42", maxWidth: 130 }}
-                    />
+                    /> */}
                   </View>
                 </TouchableOpacity>
               ))}

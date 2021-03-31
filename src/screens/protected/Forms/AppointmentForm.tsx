@@ -13,8 +13,9 @@ import apiFetch from '../../../utils/apiFetch';
 import { APP_GREEN } from '../../../utils/constant';
 import { logError, minuteSecond, monthDayYear } from '../../../utils/helpers';
 import { farmNameValidation, farmAddressValidation, generalTextFieldValidation } from '../../../utils/validation';
+import { updateUserDetail } from '../../../store/actions/userAction';
 
-const AppointmentForm = ({ navigation, user, route }: any) => {
+const AppointmentForm = ({ navigation, user, route, updateUserDetail }: any) => {
 
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState({ value: false, message: "", title: "", type: "" });
 
@@ -29,7 +30,6 @@ const AppointmentForm = ({ navigation, user, route }: any) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isFormSubmitted, setIsFormSubmitted] = useState({ status: false, value: "" });
 
-    const [isModalOpen, setIsModalOpen] = useState({ value: false, payload: "" })
     const [generalError, setGeneralError] = useState("");
 
     const { selectedPeriod, doctor, transaction } = route?.params.payload;
@@ -54,6 +54,7 @@ const AppointmentForm = ({ navigation, user, route }: any) => {
                 stockSizeError || symptomsError
                 || affectedError
             ) {
+                ToastAndroid.show("Form Data missing", ToastAndroid.LONG);
                 setIsLoading(false)
                 return false;
             }
@@ -76,15 +77,12 @@ const AppointmentForm = ({ navigation, user, route }: any) => {
             const networkRequest: any = await apiFetch.post("call/schedule/create", requestModel);
 
             if (networkRequest.status === true) {
-                setIsLoading(false)
                 setIsFormSubmitted({ status: true, value: networkRequest?.data?.id })
             } else {
                 logError(networkRequest, setGeneralError, setIsLoading);
-                return false;
             }
         } catch (error) {
             logError(error, setGeneralError, setIsLoading);
-            return false;
         }
     };
 
@@ -100,8 +98,15 @@ const AppointmentForm = ({ navigation, user, route }: any) => {
                 scheduleId: isFormSubmitted.value
             }
             const networkRequest = await apiFetch.post("payment/create", requestModel);
+
             if (networkRequest.status) {
-                setIsSuccessModalOpen({ value: true, message: "Booking Successful", title: "Successful", type: "booking" });
+                //UPDATE USER OBJECT
+                await updateUserDetail({ userDetail: networkRequest.data });
+                if (transaction.type === "chat") {
+                    setIsSuccessModalOpen({ value: true, message: "You can chat up any of the vet doctors with your questions now", title: "Chat Subscription Successful", type: "chat" });
+                } else {
+                    setIsSuccessModalOpen({ value: true, message: "Booking Successful", title: "Successful", type: "booking" });
+                }
                 return;
             }
             ToastAndroid.show(networkRequest?.message ?? "Error completing payment", ToastAndroid.LONG);
@@ -227,7 +232,7 @@ const AppointmentForm = ({ navigation, user, route }: any) => {
                                         { isFormSubmitted.status === true &&
                                             <Paystack
                                                 onSuccess={async (tranRef: any) => handleSuccessfulPayment(tranRef)}
-                                                amount={transaction.amount}
+                                                amount={2}//{transaction.amount}
                                                 actionText={"Make Payment to complete booking"}
                                                 handleFirstOperation={handleSubmitForm}
                                                 width={"100%"}
@@ -260,7 +265,8 @@ const AppointmentForm = ({ navigation, user, route }: any) => {
                                 } else if (isSuccessModalOpen.type === "chat") {
                                     setIsSuccessModalOpen({ value: true, message: "Subscription Successful", title: "Successful", type: "chatSuccess" });
                                 } else if (isSuccessModalOpen.type === "chatSuccess") {
-                                    navigation.navigate("ChatScreen", { payload: { name: 'payload.name', sender: "08130943146", recipient: "07061972413" } })
+                                    navigation.navigate("Search")
+                                    // navigation.navigate("ChatScreen", { payload: { name: 'payload.name', sender: "08130943146", recipient: "07061972413" } })
                                 } else {
                                     setIsSuccessModalOpen({ value: false, message: "", title: "", type: "" });
                                 }
@@ -282,7 +288,7 @@ const mapStateToProps = (state: any) => ({
     user: state.user.userDetail
 });
 
-export default connect(mapStateToProps)(AppointmentForm);
+export default connect(mapStateToProps, { updateUserDetail })(AppointmentForm);
 
 const styles = StyleSheet.create({
 

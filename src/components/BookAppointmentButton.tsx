@@ -12,13 +12,8 @@ import TopDoctorDetails from './TopDoctorDetails'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import dayjs from 'dayjs'
 
-
-
 const { height, width } = Dimensions.get('screen');
-
-
 type StatusTypes = "up" | "down";
-
 
 const bookingOptions = [
     {
@@ -26,7 +21,7 @@ const bookingOptions = [
         value: 'call',
         width: 180,
         amount: 500,
-        frequency: "3 sessions",
+        frequency: "Session",
         description: "To book a Video/Voice Consultation, it requires you choose the date and time the vet will be available online, pay and then access your vet. NB Each video consultation last 15mins, an extension attracts extra fee."
     },
     {
@@ -34,7 +29,7 @@ const bookingOptions = [
         value: 'farm-call',
         width: 130,
         amount: 1000,
-        frequency: "One Time",
+        frequency: "Visit",
         description: "To book an appointment with a vet on your farm requires you choose the date and time the vet will be available for farm visit, Pay and then await his/her visit to your farm",
 
     },
@@ -53,18 +48,19 @@ const BookAppointmentButton = ({
     navigation,
     title,
     noMarginLeftText,
-    otherStyles
+    otherStyles,
+    modalState,
+    setModalState
 }: any) => {
 
 
     const daysCount: any = dayjs().set('day', 10);
-    console.log(daysCount, 'daysCount')
 
-    const [dropDown, setDropDown] = useState<StatusTypes>('down')
     const [selectedPeriod, setSelectedPeriod] = useState({ date: new Date(daysCount), time: new Date() });
     const [mode, setMode] = useState<any>('date');
     const [show, setShow] = useState(false);
-    const [modalState, setModalState] = useState<{ value: boolean, option: any }>({ value: false, option: {} })
+    // const [modalState, setModalState] = useState<{ value: boolean, option: any }>({ value: false, option: {} })
+    const [dropDown, setDropDown] = useState<StatusTypes>('down')
 
 
     const onChange = (event: any, selectedDate: any) => {
@@ -81,9 +77,7 @@ const BookAppointmentButton = ({
         }
     };
 
-
     const showMode = (currentMode: any) => {
-        console.log('heyyyyy')
         setShow(true);
         setMode(currentMode);
     };
@@ -176,13 +170,12 @@ const BookAppointmentButton = ({
                     <View style={[styles.rowBetween, { marginTop: 20 }]} >
                         <ImageTextRow
                             type="large"
-                            status="wallet" text={`${modalState.option.amount} Naira/${+modalState.option.amount === 500 ? "Day" : "Month"}`} OtherStyles={{ marginTop: 0 }} />
+                            status="wallet" text={`${modalState.option.amount} Naira/${modalState.option.frequency}`} OtherStyles={{ marginTop: 0 }} />
                         <AnicureButton
                             title="Book"
                             width={60}
                             onPress={() => {
                                 setModalState({ value: false, option: {} })
-                                console.log(selectedPeriod, 'selectedPeriod')
                                 navigation.navigate("AppointmentForm",
                                     {
                                         payload: {

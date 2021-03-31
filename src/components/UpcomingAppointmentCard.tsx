@@ -1,5 +1,6 @@
 import React from 'react'
 import { Image, StyleSheet, Dimensions, View, StyleProp, ViewStyle, ImageSourcePropType } from 'react-native'
+import { APP_GREEN } from '../utils/constant'
 import AnicureButton from './AnicureButton'
 import AnicureText from './AnicureText'
 import Divider from './Divider'
@@ -9,6 +10,7 @@ const { width } = Dimensions.get("screen")
 
 interface IUpcoming {
     onChat?: () => void,
+    onCall: () => void,
     onCancel?: () => void,
     doctorImage: ImageSourcePropType,
     doctorName: string,
@@ -25,6 +27,7 @@ interface IUpcoming {
 
 const UpcomingAppointmentCard = ({
     onChat,
+    onCall,
     doctorName,
     doctorImage,
     title,
@@ -66,7 +69,7 @@ const UpcomingAppointmentCard = ({
                     />
 
                     <View style={{ width: "100%", flexDirection: "row", }}>
-                        <ImageTextRow OtherStyles={{ marginTop: 0 }} status="location" text={location ?? 'WorldWide'} distance="1.3 Km from you" />
+                        <ImageTextRow OtherStyles={{ marginTop: 0 }} status="location" text={location ?? 'WorldWide'}  />
                         <ImageTextRow OtherStyles={{ marginTop: 0 }} status="wallet" text={amount} />
                     </View>
                 </View>
@@ -82,15 +85,25 @@ const UpcomingAppointmentCard = ({
             <Divider noSpace />
             {(onCancel && onChat) && <View style={styles.rowBetween}>
                 <AnicureButton
-                    title="Chat Doctor"
-                    width={width / 2.7}
+                    title="Chat"
+                    width={width / 4.5}
                     height={40}
+                    otherStyles={{minWidth: 80}}
                     onPress={onChat}
                 />
                 <AnicureButton
-                    title="Cancel"
-                    width={width / 2.7}
+                    title="Initiate/Join Call"
+                    width={width / 3}
                     height={40}
+                    textBtn={true}
+                    otherStyles={{borderWidth: 1, borderColor: APP_GREEN, minWidth: 120}}
+                    onPress={onCall}
+                />
+                <AnicureButton
+                    title="Cancel"
+                    width={width / 4.5}
+                    height={40}
+                    otherStyles={{minWidth: 80}}
                     cancelBtn
                     onPress={onCancel}
                 />

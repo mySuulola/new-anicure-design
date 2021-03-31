@@ -125,7 +125,7 @@ const Search = ({ navigation }: any) => {
                                 onRefresh={handleRefresh}
                             />
                         }
-                        ListEmptyComponent={<AnicureText text="No data" type="subTitle" />}
+                        ListEmptyComponent={<AnicureText text="Coming Soon" type="subTitle" />}
                         refreshing={refreshing}
                         data={isVetSearch ? allDoctorListings : allPharmListings}
                         keyExtractor={(doc: any) => doc._id}

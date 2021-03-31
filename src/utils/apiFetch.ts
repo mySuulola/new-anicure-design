@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 
-const URL = "http://ff502a90ede1.ngrok.io"
+const URL = "http://594e70231ff1.ngrok.io"
 
 const instance = axios.create({
     baseURL: 'http://188.166.146.141/api/v1/',

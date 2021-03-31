@@ -77,7 +77,7 @@ export const launchPushNotification = (
 console.log(data.callType)
   try {
     PushNotification.localNotification({
-      channelId: channelId,
+      // channelId: channelId,
       allowWhileIdle: true,
       ticker: title, // (optional)
       showWhen: true, // (optional) default: true

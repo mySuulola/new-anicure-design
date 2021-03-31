@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, ScrollView, View, FlatList, RefreshControl, ActivityIndicator, ToastAndroid } from 'react-native'
+import { StyleSheet, View, FlatList, RefreshControl, ActivityIndicator, ToastAndroid } from 'react-native'
 import { connect } from 'react-redux'
 import AnicureButton from '../../components/AnicureButton'
 import AnicureText from '../../components/AnicureText'
@@ -33,8 +33,7 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
             const networkRequest: any = await apiFetch.post("call/schedule/user", { mobileNumber, isUpcoming: state ?? !isUpComing });
             if (networkRequest.status && networkRequest.data) {
                 setIsLoading(false);
-                console.log(networkRequest.data[0])
-                const filteredData = networkRequest.data.filter((item: any) => item?.schedule?.paymentStatus === "paid" );
+                const filteredData = networkRequest.data.filter((item: any) => item?.schedule?.paymentStatus === "paid" && item?.schedule?.type !== "chat");
                 setAppointments(filteredData);
                 return;
             }
@@ -50,6 +49,22 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
         fetchAllAppointments()
     }
 
+    const handleOpenCall = async (user: any) => {
+        try {
+            const { doctor } = user;
+            const requestModel = { recipient: doctor.mobileNumber, sender: mobileNumber, callType: "call" }
+            const networkRequest: any = await apiFetch.post("call/create/user", requestModel);
+            if (networkRequest.status === true) {
+                return navigation.navigate("VideoCall", { payload: { channelName: networkRequest.data.channelName, agoraToken: networkRequest.data.agoraToken } });
+            }
+            ToastAndroid.show(networkRequest.message ?? "Call Failed", ToastAndroid.LONG);
+            return;
+        } catch (error) {
+            console.log(error, 'error is')
+            ToastAndroid.show(error.message ?? "Call Failed", ToastAndroid.LONG);
+        }
+    }
+
     const handleCancelAppointment = () => {
         ToastAndroid.show("Functionality to cancel not available at the moment", ToastAndroid.LONG);
         // navigation.navigate("Search");
@@ -60,8 +75,7 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
             <Appbar
                 back={false}
                 navigation={navigation}
-                trailingIcon="ios-notifications"
-            >
+                trailingIcon="ios-notifications">
                 <AnicureText
                     text="Appointments"
                     type="subTitle"
@@ -75,7 +89,7 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
                     onPress={handleOnToggleSwitch}
                     containerStyle={{ width: 180, backgroundColor: '#FFFFFF', marginBottom: 10 }}
                     titleOne="Upcoming"
-                    titleTwo="Past"
+                    titleTwo="Completed"
                     switchState={isUpComing}
                     setSwitchState={setIsUpComing}
                 />
@@ -90,10 +104,11 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
                             <AnicureButton width={200} textBtn={true} title="Reload" onPress={handleOnToggleSwitch} />
                         </View>
                         :
-                        <View style={{ width: "100%", paddingHorizontal: 20 }}>
+                        <View style={{ width: "100%", paddingHorizontal: 20, flex: 1, marginBottom: 30 }}>
                             {allBookings.length === 0 && <AnicureText type="subTitle" text={'No data'} />}
                             {isUpComing ?
                                 <FlatList
+                                    showsVerticalScrollIndicator={false}
                                     refreshControl={
                                         <RefreshControl
                                             refreshing={refreshing}
@@ -105,10 +120,10 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
                                     // ListEmptyComponent={<AnicureText text="No data" type="subTitle" />}
                                     renderItem={({ item, index, separators }: any) =>
                                         <UpcomingAppointmentCard
+                                            onCall={() => handleOpenCall(item)}
                                             doctorImage={{ uri: item.doctor.photo }}
                                             doctorName={item.doctor.fullName}
-                                        
-                                            amount={"500 Naira/hr"}
+                                            amount={item.schedule.type}
                                             time={minuteSecond(item.schedule.time)}
                                             title={item.doctor.title}
                                             location={item?.location?.state ?? "Online"}

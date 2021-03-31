@@ -59,7 +59,7 @@ const ChatScreen = ({
         ToastAndroid.show("You cannot send message to yourself", ToastAndroid.LONG);
         return;
       }
-      console.log(requestModel)
+
       const networkRequest: any = await apiFetch.post("chat/create", requestModel);
       console.log(networkRequest)
       if (networkRequest.status && networkRequest.data) {
