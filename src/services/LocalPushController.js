@@ -19,8 +19,9 @@ PushNotification.configure({
         const parsedData = await JSON.parse(notification.userInfo);
 
         if (parsedData.route === "call") {
-          const payload = { channelName: notification.userInfo.channelName, agoraToken: notification.userInfo.agoraToken }
-          navigateMovement("VideoCall", { payload });
+          // const payload = { channelName: notification.userInfo.channelName, agoraToken: notification.userInfo.agoraToken }
+          // navigateMovement("VideoCall", { payload });
+          navigateMovement("Appointment",);
         } else if(parsedData.route === "chat") {
           const payload = { name: parsedData.name, sender: parsedData.sender, recipient: parsedData.recipient }
           navigateMovement("Chat", { payload });

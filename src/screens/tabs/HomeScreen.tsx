@@ -74,7 +74,9 @@ const HomeScreen = ({ navigation, fullName }: any) => {
           name={"ios-notifications"}
           size={25}
           color="#0F0F0F"
-          onPress={() => { }}
+          onPress={() => {
+            ToastAndroid.show("Coming Soon", ToastAndroid.SHORT);
+          }}
         />
       </View>
       {/* END OF TOP ROW */}
@@ -135,9 +137,7 @@ const HomeScreen = ({ navigation, fullName }: any) => {
                   key={item.title}
                   onPress={() => {
                     ToastAndroid.show("Coming Soon", ToastAndroid.SHORT);
-
                   }}
-                  // onPress={() =>  navigation.navigate("AppointmentForm", {payload: { selectedPeriod: {time: minuteSecond(), date: monthDayYear()  } }})  }
                   style={{
                     minHeight: 131,
                     width: 160,

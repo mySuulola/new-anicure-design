@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "store": "cd android && ./gradlew clean && ./gradlew assembleRelease && ./gradlew bundleRelease",
     "release": "npx react-native run-android --variant=release",
     "ios": "react-native run-ios",
     "start": "react-native start",

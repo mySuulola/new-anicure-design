@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, Alert, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native'
+import { ScrollView, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native'
 import { connect } from 'react-redux';
 import AnicureButton from '../../../components/AnicureButton';
 import AnicureImage from '../../../components/AnicureImage';
@@ -77,6 +77,7 @@ const AppointmentForm = ({ navigation, user, route, updateUserDetail }: any) => 
             const networkRequest: any = await apiFetch.post("call/schedule/create", requestModel);
 
             if (networkRequest.status === true) {
+                setIsLoading(false)
                 setIsFormSubmitted({ status: true, value: networkRequest?.data?.id })
             } else {
                 logError(networkRequest, setGeneralError, setIsLoading);
@@ -103,20 +104,18 @@ const AppointmentForm = ({ navigation, user, route, updateUserDetail }: any) => 
                 //UPDATE USER OBJECT
                 await updateUserDetail({ userDetail: networkRequest.data });
                 if (transaction.type === "chat") {
-                    setIsSuccessModalOpen({ value: true, message: "You can chat up any of the vet doctors with your questions now", title: "Chat Subscription Successful", type: "chat" });
+                    setIsSuccessModalOpen({ value: true, message: "You can chat up any of the vet doctors with your questions now", title: "Chat Subscription Successful", type: "chatSuccess" });
                 } else {
                     setIsSuccessModalOpen({ value: true, message: "Booking Successful", title: "Successful", type: "booking" });
                 }
                 return;
             }
             ToastAndroid.show(networkRequest?.message ?? "Error completing payment", ToastAndroid.LONG);
-            setIsSuccessModalOpen({ value: true, message: "An error occurred while processing your transaction. Please contact support on 07061972413 via phone, chat or SMS to get this resolved", title: "Contact Support", type: "error" });
+            setIsSuccessModalOpen({ value: true, message: "An error occurred while processing your transaction. Please contact support on 08103393894 via phone, chat or SMS to get this resolved", title: "Contact Support", type: "error" });
         } catch (error) {
             ToastAndroid.show(error?.message ?? "Error completing payment", ToastAndroid.LONG);
-            setIsSuccessModalOpen({ value: true, message: "An error occurred while processing your transaction. Please contact support on 07061972413 via phone, chat or SMS to get this resolved", title: "Contact Support", type: "error" });
+            setIsSuccessModalOpen({ value: true, message: "An error occurred while processing your transaction. Please contact support on 08103393894 via phone, chat or SMS to get this resolved", title: "Contact Support", type: "error" });
         }
-
-
     }
 
     const handleCancelPayment = () => {
@@ -232,7 +231,7 @@ const AppointmentForm = ({ navigation, user, route, updateUserDetail }: any) => 
                                         { isFormSubmitted.status === true &&
                                             <Paystack
                                                 onSuccess={async (tranRef: any) => handleSuccessfulPayment(tranRef)}
-                                                amount={2}//{transaction.amount}
+                                                amount={transaction.amount}
                                                 actionText={"Make Payment to complete booking"}
                                                 handleFirstOperation={handleSubmitForm}
                                                 width={"100%"}

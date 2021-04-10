@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ActivityIndicator, RefreshControl, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
+import { ActivityIndicator, FlatList, RefreshControl, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import AnicureButton from '../../components/AnicureButton'
 import AnicureText from '../../components/AnicureText'
 import Appbar from '../../components/Appbar'
@@ -119,6 +118,7 @@ const Search = ({ navigation }: any) => {
                 </View> :
 
                     <FlatList
+                        showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl
                                 refreshing={refreshing}

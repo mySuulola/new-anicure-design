@@ -46,7 +46,7 @@ const More = ({ navigation, user, userLogout }: any) => {
                     <ProfileBox title="Chat Consultation Subscription" text={user.subscription?.chat?.status ? "Active" : "Inactive"} />
                     <ProfileBox title="Voice/Video Consultation Subscription" text={user.subscription?.call?.status ? "Active" : "Inactive"} />
                     <ProfileBox title="Farm Call Service" text={user.subscription?.farmService?.status ? "Active" : "Inactive"} />
-                    <ProfileBox title="Customer Support Contact" text={"08103243549"} />
+                    <ProfileBox title="Customer Support Contact" text={"08103393894"} />
                     <AnicureText text="©️ eVet" type="subTitle" otherStyles={{ paddingVertical: 20, fontSize: 15, fontFamily: "Roboto-Bold" }} />
                
                 </ScrollView>

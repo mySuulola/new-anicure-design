@@ -21,32 +21,26 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        fetchAllAppointments(true)
-    }, [])
+        fetchAllAppointments()
+    }, [isUpComing])
 
-    const fetchAllAppointments = async (state?: boolean) => {
-
+    const fetchAllAppointments = async () => {
         try {
             setIsLoading(true);
             setGeneralError("Loading")
-            console.log(isUpComing)
-            const networkRequest: any = await apiFetch.post("call/schedule/user", { mobileNumber, isUpcoming: state ?? !isUpComing });
+            const requestModel = { mobileNumber, isUpcoming: isUpComing }
+            const networkRequest: any = await apiFetch.post("call/schedule/user", requestModel);
             if (networkRequest.status && networkRequest.data) {
                 setIsLoading(false);
                 const filteredData = networkRequest.data.filter((item: any) => item?.schedule?.paymentStatus === "paid" && item?.schedule?.type !== "chat");
                 setAppointments(filteredData);
                 return;
             }
+            setAppointments([])
             logError(networkRequest, setGeneralError, setIsLoading);
-
         } catch (error) {
             logError(error, setGeneralError, setIsLoading);
         }
-    }
-
-    const handleOnToggleSwitch = async () => {
-        setAppointments([]);
-        fetchAllAppointments()
     }
 
     const handleOpenCall = async (user: any) => {
@@ -55,7 +49,9 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
             const requestModel = { recipient: doctor.mobileNumber, sender: mobileNumber, callType: "call" }
             const networkRequest: any = await apiFetch.post("call/create/user", requestModel);
             if (networkRequest.status === true) {
-                return navigation.navigate("VideoCall", { payload: { channelName: networkRequest.data.channelName, agoraToken: networkRequest.data.agoraToken } });
+                const data = { payload: { channelName: networkRequest.data.channelName, agoraToken: networkRequest.data.agoraToken } };
+                console.log(data, 'data')
+                return navigation.navigate("VideoCall", data);
             }
             ToastAndroid.show(networkRequest.message ?? "Call Failed", ToastAndroid.LONG);
             return;
@@ -86,7 +82,7 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
                 alignItems: "center"
             }}>
                 <Toggle
-                    onPress={handleOnToggleSwitch}
+                    onPress={() => { }}
                     containerStyle={{ width: 180, backgroundColor: '#FFFFFF', marginBottom: 10 }}
                     titleOne="Upcoming"
                     titleTwo="Completed"
@@ -101,11 +97,24 @@ const Appointment = ({ navigation, mobileNumber }: any) => {
                                 color={APP_GREEN}
                             />
                             <AnicureText type="subTitle" text={generalError} />
-                            <AnicureButton width={200} textBtn={true} title="Reload" onPress={handleOnToggleSwitch} />
+                            <AnicureButton
+                                width={200}
+                                textBtn={true}
+                                title="Reload"
+                                onPress={fetchAllAppointments}
+                            />
                         </View>
                         :
                         <View style={{ width: "100%", paddingHorizontal: 20, flex: 1, marginBottom: 30 }}>
-                            {allBookings.length === 0 && <AnicureText type="subTitle" text={'No data'} />}
+                            {
+                                (allBookings.length === 0 && isUpComing === true) &&
+                                <AnicureText otherStyles={{ paddingHorizontal: 20, paddingTop: 20 }} type="subTitle" text={'You have no Pending Appointment. Kindly click on the Search Tab to book an appointment to have a session with a Veterinary Doctor'} />
+                            }
+                            {
+                                (allBookings.length === 0 && isUpComing === false) &&
+                                <AnicureText otherStyles={{ paddingHorizontal: 20, paddingTop: 20 }} type="subTitle" text={'No Past/Completed appointments.'} />
+
+                            }
                             {isUpComing ?
                                 <FlatList
                                     showsVerticalScrollIndicator={false}

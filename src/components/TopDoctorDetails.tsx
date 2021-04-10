@@ -38,7 +38,7 @@ const TopDoctorDetails = ({
                     <AnicureText
                         text={name}
                         type="title"
-                        otherStyles={{ textAlign: "left", fontSize: 20, fontFamily: "Roboto-Medium" }}
+                        otherStyles={{ textAlign: "left", fontSize: 20, fontFamily: "Roboto-Medium", maxWidth: 200 }}
                     />
                     <AnicureText
                         text={title}

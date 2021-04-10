@@ -41,7 +41,7 @@ const DoctorCard = ({ item, navigation }: any) => {
                         otherStyles={{ fontFamily: "Roboto-Bold", color: APP_GREEN, fontSize: 7, marginTop: 0 }}
                     />
                     <AnicureText
-                        text={item.isConfirmed ? "ONLINE" : "OFFLINE"}
+                        text={item.availability}
                         type="subTitle"
                         left
                         otherStyles={{ color: APP_GREEN, fontSize: 7, marginTop: 0, textAlign: "left", }}
