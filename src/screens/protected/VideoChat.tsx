@@ -269,8 +269,7 @@ class VideoChat extends Component<Props, State> {
               );
             })}</View>
             :
-            <AnicureText text={`Waiting for others to join ${peerIds.length}`} type="subTitle" />
-
+            <AnicureText text={`Waiting for doctor to join. Please wait...`} type="subTitle" />
         }
       </ScrollView>
     );

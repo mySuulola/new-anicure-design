@@ -35,8 +35,7 @@ const VerifyPhoneNumber = ({ navigation, route }: any) => {
                 setIsAPIOperation({ loading: false, error: networkRequest?.message ?? "Network Error" });
             }
         } catch (error) {
-            console.log("Catch error", error.data);
-            setIsAPIOperation({ loading: false, error: error?.data?.message ?? "Network Error" });
+            setIsAPIOperation({ loading: false, error: error?.message ?? error?.data?.message ?? "Network Error" });
         }
     }
 

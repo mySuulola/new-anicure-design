@@ -89,7 +89,6 @@ const AppointmentForm = ({ navigation, user, route, updateUserDetail }: any) => 
 
     const handleSuccessfulPayment = async (tranRef: string) => {
         try {
-            console.log(tranRef)
             const requestModel = {
                 user: user.mobileNumber,
                 doctor: doctor.mobileNumber,

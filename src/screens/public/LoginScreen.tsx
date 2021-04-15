@@ -48,7 +48,7 @@ const LoginScreen = ({ navigation, updateUserDetail }: any) => {
       // API
       const requestModel = { mobileNumber: mobileNumber.value, password: password.value }
       const requestLogin: any = await apiFetch.post("users/login/", requestModel);
-
+      console.log('------', requestLogin)
 
       if (requestLogin.status && requestLogin.data) {
         await updateUserDetail({ userDetail: requestLogin.data });
@@ -56,6 +56,8 @@ const LoginScreen = ({ navigation, updateUserDetail }: any) => {
       }
       logError(requestLogin, setGeneralError, setIsLoading);
     } catch (error) {
+      console.log('---error---', error)
+
       try {
         if (error?.data?.data === 'notConfirmed') {
           const networkRequest: any = await apiFetch.post("users/otp/resend", { mobileNumber: mobileNumber.value });

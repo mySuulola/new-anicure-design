@@ -11,9 +11,8 @@ export const logError = (
    setIsLoading: (state: boolean) => void,
    errorMessage?: string,
 ) => {
-   // console.log(error.data, "222222")
    setIsLoading(false)
-   const formattedError = error?.message ?? error?.data?.message ?? "";
+   const formattedError = error?.message ?? error?.data?.message;
    if (formattedError) {
       ToastAndroid.show(formattedError, ToastAndroid.LONG);
    }

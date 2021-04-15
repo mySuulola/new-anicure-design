@@ -65,8 +65,7 @@ const DoctorDetail = ({ navigation, route, mobileNumber, subscription }: any) =>
             }
             setModalDetails({ value: true, message: "You currently do not have an appointment with this doctor at this time. Kindly book an appointment below and try at that time", title: "Book an appointment", type: "callError" })
         } catch (error) {
-            console.log(error, 'error is')
-            ToastAndroid.show(error.message ?? "Call Failed", ToastAndroid.LONG);
+            ToastAndroid.show(error?.message ?? "Call Failed", ToastAndroid.LONG);
         }
     }
 

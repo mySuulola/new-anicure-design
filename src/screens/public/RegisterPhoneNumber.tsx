@@ -36,7 +36,6 @@ const RegisterPhoneNumber = ({ navigation }: any) => {
                 setIsAPIOperation({ loading: false, error: "" });
             }
         } catch (error) {
-            console.log("Catch error", error.data);
             setIsAPIOperation({ loading: false, error: error?.data?.message ?? "Network Error" });
         }
     }

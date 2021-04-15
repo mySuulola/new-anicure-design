@@ -25,9 +25,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const saveTokenToDatabase = async (token, mobileNumber) => {
-  console.log('----------TOKEN----------')
-  console.log(token)
-  console.log('----------TOKEN----------')
   const networkRequest = await apiFetch.post("users/token", { fcmToken: token, mobileNumber });
   console.log(networkRequest)
 }

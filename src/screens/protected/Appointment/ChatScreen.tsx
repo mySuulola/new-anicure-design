@@ -61,15 +61,14 @@ const ChatScreen = ({
       }
 
       const networkRequest: any = await apiFetch.post("chat/create", requestModel);
-      console.log(networkRequest)
-      if (networkRequest.status && networkRequest.data) {
+      if (networkRequest?.status && networkRequest?.data) {
         setAllMessages([...allMessages, networkRequest.data]);
         setMessage("");
         return;
       }
-      ToastAndroid.show(networkRequest.message ?? "Failed to send. Try again", ToastAndroid.LONG);
+      ToastAndroid.show(networkRequest?.message ?? "Failed to send. Try again", ToastAndroid.LONG);
     } catch (error) {
-      ToastAndroid.show(error.message ?? "Network Error. Could not send message", ToastAndroid.LONG);
+      ToastAndroid.show(error?.message ?? "Network Error. Could not send message", ToastAndroid.LONG);
     }
   }
 
@@ -80,11 +79,9 @@ const ChatScreen = ({
         recipient: doctor,
       }
       const networkRequest: any = await apiFetch.post("chat/conversation", requestModel);
-      console.log(networkRequest, 'CONVERSATION')
       setIsLoading(false)
 
       if (networkRequest.status && networkRequest.data) {
-        console.log(networkRequest.data)
         setAllMessages(networkRequest.data);
         return;
       }

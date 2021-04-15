@@ -65,9 +65,7 @@ const CreateFarm = ({ navigation, route, updateUserDetail }: any) => {
     };
 
     const navigateToDashboard = async () => {
-        console.log(isModalOpen.payload, '****')
         await updateUserDetail({ userDetail: isModalOpen.payload });
-        // setIsModalOpen({value: false, payload: ""});
     }
 
 
