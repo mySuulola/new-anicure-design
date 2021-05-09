@@ -17,6 +17,7 @@ import VoiceCall from '../screens/protected/Appointment/VoiceCall';
 import AppointmentForm from '../screens/protected/Forms/AppointmentForm';
 import { connect } from 'react-redux';
 import apiFetch from '../utils/apiFetch';
+import Events from '../screens/protected/Events/Events';
 
 import { navigationRef } from './RootNavigation';
 
@@ -66,6 +67,7 @@ const UserTab = ({ mobileNumber }) => {
         <Stack.Screen name="VoiceCall" component={VoiceCall} />
         <Stack.Screen name="PastAppointmentDetail" component={PastAppointmentDetail} />
         <Stack.Screen name="AppointmentForm" component={AppointmentForm} />
+        <Stack.Screen name="Events" component={Events} />
       </Stack.Navigator>
     </NavigationContainer>
   );

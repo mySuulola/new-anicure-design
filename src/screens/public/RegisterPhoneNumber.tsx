@@ -17,7 +17,8 @@ const RegisterPhoneNumber = ({ navigation }: any) => {
     const [isAPIOperation, setIsAPIOperation] = useState({ loading: false, error: "" });
 
     const handlePhoneRegistration = async () => {
-
+        // navigation.push("VerifyPhoneNumber", { mobileNumber });
+        // return;
         try {
             setIsAPIOperation({ loading: true, error: "" });
             if (!mobileNumber || mobileNumber.length !== 11) {
@@ -78,7 +79,7 @@ const RegisterPhoneNumber = ({ navigation }: any) => {
                                 keyboardType="phone-pad"
                                 imageSource={require("../../assets/images/nigeria_flag.png")}
                                 // decoratorIcon="cellphone-basic"
-                                placeholder="Phone Number"
+                                placeholder="ex. 07032345678"
                                 autoFocus={true}
                             />
                             {isAPIOperation.loading ? <ActivityIndicator

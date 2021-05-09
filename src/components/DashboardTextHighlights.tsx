@@ -23,7 +23,7 @@ const DashboardTextHighlights = ({count, description, middle} : any ) => {
             <AnicureText 
             text={description}
             type="subTitle"
-            otherStyles={{ color: "#9AFF67E6", fontSize: 10, fontFamily: "Roboto-Medium"  }}
+            otherStyles={{ color: "#9AFF67E6", fontSize: 10, fontFamily: "Roboto-Medium", textTransform: "capitalize"  }}
             />
             
         </View>

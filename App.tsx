@@ -38,6 +38,7 @@ const App = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "#F4F4F4" }}>
       { isConnected === false && <AnicureText text={'Internet connectivity issues'} type="subTitle" otherStyles={{ marginTop: 0, paddingTop: 10, backgroundColor: APP_GREEN, color: "#FFFFFF", paddingVertical: 5, fontSize: 10 }} />}
+      {/* @ts-ignore */}
       <Providers />
     </View>
   );

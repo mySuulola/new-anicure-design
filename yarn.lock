@@ -6275,6 +6275,11 @@ react-native-linear-gradient@^2.5.6:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
   integrity sha512-HDwEaXcQIuXXCV70O+bK1rizFong3wj+5Q/jSyifKFLg0VWF95xh8XQgfzXwtq0NggL9vNjPKXa016KuFu+VFg==
 
+react-native-open-pdf@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-open-pdf/-/react-native-open-pdf-0.0.2.tgz#cc32d5d040d4130b036b38a068a8ce93921d99f1"
+  integrity sha512-IUJl1VM4Uc/Uxz+Gvr8Rokdpgisk7t2xLmNuqIF1QzAFso7mttkK0ZSVzXNx/mlcvu8kSmcf7n1qvKMGGtFawQ==
+
 react-native-paystack-webview@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/react-native-paystack-webview/-/react-native-paystack-webview-3.2.1.tgz#4c5024a924a20bf37b6385dd02f3ad49e7206e48"

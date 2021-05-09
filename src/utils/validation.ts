@@ -43,10 +43,10 @@ export const farmAddressValidation = (
 
   if (farmAddress.value === "") {
     errorDetected = true;
-    setFarmAddress({ value: farmAddress.value, error: "Farm Address cannot be blank" });
-  } else if (farmAddress.value.length < 6) {
+    setFarmAddress({ value: farmAddress.value, error: "Field cannot be blank" });
+  } else if (farmAddress.value.length < 3) {
     errorDetected = true;
-    setFarmAddress({ value: farmAddress.value, error: "Farm Address cannot be less than 6 characters" });
+    setFarmAddress({ value: farmAddress.value, error: "Field cannot be less than 3 characters" });
   } else {
     setFarmAddress({ value: farmAddress.value, error: "" });
   }

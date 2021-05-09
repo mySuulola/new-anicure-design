@@ -13,8 +13,7 @@ import { updateUserDetail } from '../../store/actions/userAction'
 import { connect } from 'react-redux';
 import apiFetch from '../../utils/apiFetch'
 import { logError } from '../../utils/helpers'
-
-
+import { stateAndLocalGovt } from '../../utils/nigeria_state'
 
 const CreateFarm = ({ navigation, route, updateUserDetail }: any) => {
 
@@ -24,6 +23,7 @@ const CreateFarm = ({ navigation, route, updateUserDetail }: any) => {
     const [farmAddress, setFarmAddress] = useState({ value: "", error: "" });
     const [localGovernment, setLocalGovernment] = useState({ value: "", error: "" });
     const [stateProvince, setStateProvince] = useState({ value: "", error: "" });
+    const [userCategory, setUserCategory] = useState({ value: "", error: "" });
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -36,11 +36,12 @@ const CreateFarm = ({ navigation, route, updateUserDetail }: any) => {
 
             // VALIDATIONS
             const farmNameError = farmNameValidation(farmName, setFarmName);
+            const userCategoryError = farmNameValidation(userCategory, setUserCategory);
             const farmAddressError = farmAddressValidation(farmAddress, setFarmAddress);
             const localGovernmentError = farmNameValidation(localGovernment, setLocalGovernment);
             const stateError = farmNameValidation(stateProvince, setStateProvince);
 
-            if (farmNameError || farmAddressError || localGovernmentError || stateError) {
+            if (userCategoryError || farmNameError || farmAddressError || localGovernmentError || stateError) {
                 setIsLoading(false)
                 return;
             }
@@ -48,6 +49,7 @@ const CreateFarm = ({ navigation, route, updateUserDetail }: any) => {
             const requestModel = {
                 mobileNumber,
                 name: farmName.value,
+                userCategory: userCategory.value,
                 address: farmAddress.value,
                 state: stateProvince.value,
                 localGovernment: localGovernment.value
@@ -67,11 +69,26 @@ const CreateFarm = ({ navigation, route, updateUserDetail }: any) => {
     const navigateToDashboard = async () => {
         await updateUserDetail({ userDetail: isModalOpen.payload });
     }
+    const [localGovtOptions, setLocalGovtOptions] = useState<Array<any>>([])
 
+    const getLocalGovernment = (state: string) => {
+
+        setStateProvince({ value: state, error: stateProvince.error })
+        let arr: Array<any> = [{ name: "Select Local Government of Residence", value: "" }];
+        const userState = stateAndLocalGovt.filter(
+            (item: any) => item.value === state,
+        );
+        if (userState.length > 0) {
+            for (let item of userState[0].lgas) {
+                arr.push({ name: item, value: item });
+            }
+        }
+        setLocalGovtOptions(arr);
+    };
 
     return (
         <View style={{ flex: 1 }}>
-            <Appbar navigation={navigation} back={true} title="Step 2/3" />
+            <Appbar navigation={navigation} back={true} title="Step 3/3" />
             <ScrollView>
                 <View style={commonStyling.registrationContainer} >
                     <AnicureImage
@@ -99,32 +116,74 @@ const CreateFarm = ({ navigation, route, updateUserDetail }: any) => {
                             />
 
                             <FormInput
-                                labelName="Farm Name"
-                                value={farmName.value}
-                                error={farmName.error}
-                                autoCapitalize="none"
-                                onChangeText={(name: string) => setFarmName({ value: name, error: farmName.error })}
-                            />
-                            <FormInput
-                                labelName="Farm Address"
-                                value={farmAddress.value}
-                                error={farmAddress.error}
-                                autoCapitalize="none"
-                                onChangeText={(name: string) => setFarmAddress({ value: name, error: farmAddress.error })}
+                                type="dropdown"
+                                options={[
+                                    { name: "Select One- Farmer or Pet Owner", value: "" },
+                                    { name: "Farmer", value: "farm" },
+                                    { name: "Pet Owner", value: "pet" },
+                                ]}
+                                labelName="User Category"
+                                selectedValue={userCategory.value}
+                                error={userCategory.error}
+                                onValueChange={(text: string) => setUserCategory({ value: text, error: userCategory.error })}
                             />
 
+                            {
+                                userCategory.value === "farm" ?
+                                    <>
+                                        <FormInput
+                                            labelName="Farm Name"
+                                            value={farmName.value}
+                                            error={farmName.error}
+                                            autoCapitalize="none"
+                                            onChangeText={(name: string) => setFarmName({ value: name, error: farmName.error })}
+                                        />
+                                        <FormInput
+                                            labelName="Farm Address"
+                                            value={farmAddress.value}
+                                            error={farmAddress.error}
+                                            autoCapitalize="none"
+                                            onChangeText={(name: string) => setFarmAddress({ value: name, error: farmAddress.error })}
+                                        />
+                                    </>
+                                    :
+                                    userCategory.value === "pet" ?
+                                        <>
+                                            <FormInput
+                                                labelName="Pet Type"
+                                                placeholder="Ex. Dog, Cat etc"
+                                                value={farmName.value}
+                                                error={farmName.error}
+                                                autoCapitalize="none"
+                                                onChangeText={(name: string) => setFarmName({ value: name, error: farmName.error })}
+                                            />
+                                            <FormInput
+                                                labelName="Breed of Pet"
+                                                value={farmAddress.value}
+                                                error={farmAddress.error}
+                                                autoCapitalize="none"
+                                                onChangeText={(name: string) => setFarmAddress({ value: name, error: farmAddress.error })}
+                                            />
+                                        </>
+                                        : null
+                            }
+
                             <FormInput
+                                type="dropdown"
+                                options={stateAndLocalGovt}
                                 labelName="State of Residence"
-                                value={stateProvince.value}
+                                selectedValue={stateProvince.value}
                                 error={stateProvince.error}
-                                onChangeText={(text: string) => setStateProvince({ value: text, error: stateProvince.error })}
+                                onValueChange={(text: string) => getLocalGovernment(text)}
                             />
 
                             <FormInput
+                                type="dropdown"
+                                options={localGovtOptions}
                                 labelName="Local Government"
-                                value={localGovernment.value}
+                                selectedValue={localGovernment.value}
                                 error={localGovernment.error}
-                                onChangeText={(text: string) => setLocalGovernment({ value: text, error: localGovernment.error })}
+                                onValueChange={(text: string) => setLocalGovernment({ value: text, error: localGovernment.error })}
                             />
 
                             {(isLoading == false) ? (
@@ -135,11 +194,11 @@ const CreateFarm = ({ navigation, route, updateUserDetail }: any) => {
                                     width={"100%"}
                                 />
                             ) : (
-                                    <ActivityIndicator
-                                        size="large"
-                                        color={APP_GREEN}
-                                    />
-                                )}
+                                <ActivityIndicator
+                                    size="large"
+                                    color={APP_GREEN}
+                                />
+                            )}
                         </View>
                     </View>
                     <SuccessModal

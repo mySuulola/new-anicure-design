@@ -15,40 +15,53 @@ import AnicureText from '../../components/AnicureText';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import DashboardTextHighlights from '../../components/DashboardTextHighlights';
 import AnicureButton from '../../components/AnicureButton';
-import { minuteSecond, monthDayYear } from '../../utils/helpers';
+import { monthDayYear } from '../../utils/helpers';
 
 
-const dashboardSummary = [
-  {
-    title: "Farm Record",
-    header: "Manage farm data",
-    summary: "",
-    image: require("../../assets/svg/pents.png"),
-  },
-  {
-    title: "Vaccine Tracker",
-    header: "Next Vaccination",
-    summary: monthDayYear(),
-    image: require("../../assets/images/vaccine_tracker.png"),
-  },
-  {
-    title: "Analytics",
-    header: "View Farm Analytics for the month",
-    summary: "",
-    image: require("../../assets/images/analytics.png"),
-  },
-  {
-    title: "Health Record",
-    header: "",
-    summary: "",
-    image: require("../../assets/images/create_new.png"),
-  },
 
-]
+const { width } = Dimensions.get('screen');
 
-const { height, width } = Dimensions.get('screen');
+const HomeScreen = ({ navigation, fullName, userCategory }: any) => {
+  console.log({ userCategory })
 
-const HomeScreen = ({ navigation, fullName }: any) => {
+  const dashboardSummary = [
+    {
+      title: "Events",
+      route: "Events",
+      header: "Download resource/training materials",
+      summary: "",
+      image: require("../../assets/images/analytics.png"),
+    },
+    {
+      title: `${userCategory} Record`,
+      route: "",
+      header: `Manage ${userCategory} data`,
+      summary: "",
+      image: require("../../assets/svg/pents.png"),
+    },
+    {
+      title: "Vaccine Tracker",
+      route: "",
+      header: "Next Vaccination",
+      summary: monthDayYear(),
+      image: require("../../assets/images/vaccine_tracker.png"),
+    },
+    {
+      title: "Analytics",
+      route: "",
+      header: "View Farm Analytics for the month",
+      summary: "",
+      image: require("../../assets/images/analytics.png"),
+    },
+    {
+      title: "Health Record",
+      route: "",
+      header: "",
+      summary: "",
+      image: require("../../assets/images/create_new.png"),
+    },
+
+  ]
 
   return (
     <View style={styles.container}>
@@ -101,7 +114,7 @@ const HomeScreen = ({ navigation, fullName }: any) => {
           <DashboardTextHighlights
             count={0}
             middle={true}
-            description="Animal Categories"
+            description={`${userCategory} Categories`}
           />
           <DashboardTextHighlights
             count={0}
@@ -109,7 +122,6 @@ const HomeScreen = ({ navigation, fullName }: any) => {
           />
         </View>
         <View style={{
-
           flex: 1,
           backgroundColor: "#F4F4F4",
           marginTop: 30,
@@ -136,7 +148,9 @@ const HomeScreen = ({ navigation, fullName }: any) => {
                 <TouchableOpacity
                   key={item.title}
                   onPress={() => {
-                    ToastAndroid.show("Coming Soon", ToastAndroid.SHORT);
+                    item.route ?
+                      navigation.navigate(item.route) :
+                      ToastAndroid.show("Coming Soon", ToastAndroid.SHORT);
                   }}
                   style={{
                     minHeight: 131,
@@ -160,14 +174,14 @@ const HomeScreen = ({ navigation, fullName }: any) => {
                   <AnicureText
                     text={`${item.title}`}
                     type="title"
-                    otherStyles={{ fontSize: 14, marginBottom: 4, marginTop: 8 }}
+                    otherStyles={{ fontSize: 14, marginBottom: 4, marginTop: 8, textTransform: "capitalize" }}
                   />
 
                   <View>
                     <AnicureText
                       text={`${item.header} `}
                       type="subTitle"
-                      otherStyles={{ fontFamily: "Roboto-Bold", color: "#619E42", maxWidth: 130 }}
+                      otherStyles={{ fontFamily: "Roboto-Bold", color: "#619E42", maxWidth: 130, textTransform: "capitalize" }}
                     />
                     {/* <AnicureText
                       text={`${item.summary}`}
@@ -201,7 +215,8 @@ const HomeScreen = ({ navigation, fullName }: any) => {
 };
 
 const mapStateToProps = (state: any) => ({
-  fullName: state.user.userDetail.fullName
+  fullName: state.user.userDetail.fullName,
+  userCategory: state.user.userDetail?.farmDetails?.userCategory ?? "farm",
 });
 
 export default connect(mapStateToProps)(HomeScreen);

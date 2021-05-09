@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { ScrollView, StyleSheet, View, ActivityIndicator, ToastAndroid } from 'react-native'
 import AnicureButton from '../../components/AnicureButton'
 import AnicureImage from '../../components/AnicureImage'
 import AnicureText from '../../components/AnicureText'
 import Appbar from '../../components/Appbar'
 import FormInput from '../../components/FormInput'
 import { APP_GREEN } from '../../utils/constant'
-import { passwordValidation, emailValidation, confirmPasswordValidation, fullNameValidation } from '../../utils/validation'
+import { passwordValidation, emailValidation, confirmPasswordValidation, fullNameValidation, generalTextFieldValidation } from '../../utils/validation'
 import commonStyling from '../../styles/GeneralStyling';
 import apiFetch from '../../utils/apiFetch'
 import { logError } from '../../utils/helpers'
@@ -17,46 +17,83 @@ const AddProfileDetails = ({ navigation, route }: any) => {
 
     const [fullName, setFullName] = useState({ value: "", error: "" });
     const [email, setEmail] = useState({ value: "", error: "" });
+    const [referral, setReferral] = useState({ value: "", error: "" });
+    const [selectedClinic, setSelectedClinic] = useState({ value: "", error: "" });
+    const [clinicCode, setClinicCode] = useState({ value: "", error: "" });
     const [password, setPassword] = useState({ value: "", error: "" });
     const [confirmPassword, setConfirmPassword] = useState({ value: "", error: "" });
     const [isLoading, setIsLoading] = useState(false);
     const [generalError, setGeneralError] = useState("");
 
+    const [allClinics, setAllClinics] = useState<Array<{ name: string, value: string }>>([])
+
     const handleRegistration = async () => {
 
         try {
-            setIsLoading(true);
-
             // VALIDATIONS
             const emailError = emailValidation(email, setEmail);
             const passwordError = passwordValidation(password, setPassword);
             const confirmPasswordError = confirmPasswordValidation(password.value, confirmPassword, setConfirmPassword);
             const fullNameError = fullNameValidation(fullName, setFullName);
+            const affiliatedError = generalTextFieldValidation(selectedClinic, setSelectedClinic);
 
-            if (emailError || passwordError || confirmPasswordError || fullNameError) {
-                setIsLoading(false)
+            if (emailError || passwordError || affiliatedError || confirmPasswordError || fullNameError) {
                 return;
             }
             //TODO: API to register user and send OTP
-            setIsLoading(false);
+            const clinicObject = allClinics.filter(item => item.value === selectedClinic.value)[0];
 
+            if (clinicObject.value !== "others" && (clinicObject.value.toLowerCase() !== clinicCode.value.toLowerCase())) {
+                setClinicCode(oldState => ({ ...oldState, error: "Incorrect Vet Clinic code" }));
+                return;
+            }
+            setClinicCode(oldState => ({ ...oldState, error: "" }));  
+            setIsLoading(true);
             const requestModel = {
                 mobileNumber,
                 email: email.value,
                 password: password.value,
-                fullName: fullName.value
+                fullName: fullName.value,
+                affiliatedClinic: clinicObject,
+                referralPhoneNumber: referral.value
             }
             const networkRequest: any = await apiFetch.post("users/register/user", requestModel);
             if (networkRequest.status === true) {
+                setIsLoading(false)
                 navigation.push("CreateFarm", { mobileNumber });
                 return;
             }
+            setIsLoading(false)
             logError(networkRequest, setGeneralError, setIsLoading);
 
         } catch (error) {
+            setIsLoading(false)
             logError(error, setGeneralError, setIsLoading);
         }
     };
+
+    const fetchClinics = async () => {
+        try {
+            const networkRequest: any = await apiFetch.get("report/clinic");
+            if (networkRequest.status === true && networkRequest.data) {
+                let formattedClinics: Array<{ name: string, value: string }> = [{ name: "Select One", value: "" }];
+                networkRequest.data.map((item: { clinicName: string, clinicCode: string }) => (
+                    formattedClinics.push({ name: item.clinicName, value: item.clinicCode })
+                ))
+                formattedClinics.push({ name: "None of the above", value: "others" })
+                formattedClinics.push({ name: "Others", value: "others" })
+                setAllClinics(formattedClinics);
+                return;
+            }
+            ToastAndroid.show(networkRequest?.message ?? "Clinic Data not fetched", ToastAndroid.LONG);
+        } catch (error) {
+            ToastAndroid.show(error?.message ?? "Clinic Data not fetched", ToastAndroid.LONG);
+        }
+    }
+
+    useEffect(() => {
+        fetchClinics()
+    }, [])
 
     return (
         <View style={{ flex: 1 }}>
@@ -103,6 +140,22 @@ const AddProfileDetails = ({ navigation, route }: any) => {
                             />
 
                             <FormInput
+                                type="dropdown"
+                                options={allClinics}
+                                labelName="Affiliated Vet Clinic"
+                                selectedValue={selectedClinic.value}
+                                error={selectedClinic.error}
+                                onValueChange={(text: string) => setSelectedClinic({ value: text, error: selectedClinic.error })}
+                            />
+
+                            <FormInput
+                                labelName="Affiliated Vet Clinic Code"
+                                value={clinicCode.value}
+                                error={clinicCode.error}
+                                onChangeText={(text: string) => setClinicCode({ value: text, error: clinicCode.error })}
+                            />
+
+                            <FormInput
                                 labelName="Password"
                                 icon="password"
                                 value={password.value}
@@ -119,6 +172,14 @@ const AddProfileDetails = ({ navigation, route }: any) => {
                                 secureTextEntry={true}
                                 onChangeText={(userPassword: string) => setConfirmPassword({ value: userPassword, error: confirmPassword.error })}
                             />
+                            <FormInput
+                                labelName="Referral Phone Number(Optional)"
+                                value={referral.value}
+                                keyboardType="numeric"
+                                error={referral.error}
+                                autoCapitalize="none"
+                                onChangeText={(text: string) => setReferral({ value: text, error: referral.error })}
+                            />
 
                             {(isLoading == false) ? (
                                 <AnicureButton
@@ -128,11 +189,11 @@ const AddProfileDetails = ({ navigation, route }: any) => {
                                     width={"100%"}
                                 />
                             ) : (
-                                    <ActivityIndicator
-                                        size="large"
-                                        color={APP_GREEN}
-                                    />
-                                )}
+                                <ActivityIndicator
+                                    size="large"
+                                    color={APP_GREEN}
+                                />
+                            )}
                         </View>
                     </View>
                 </View>

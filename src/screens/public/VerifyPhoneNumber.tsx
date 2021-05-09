@@ -16,8 +16,9 @@ const VerifyPhoneNumber = ({ navigation, route }: any) => {
     const [OTP, setOTP] = useState("");
     const [isAPIOperation, setIsAPIOperation] = useState({ loading: false, error: "" });
 
-
     const handleVerifyOTP = async () => {
+        // navigation.push("AddProfileDetails", { mobileNumber });
+        // return;
         try {
             setIsAPIOperation({ loading: true, error: "" });
             if (!OTP || OTP.length !== 6) {
@@ -25,7 +26,7 @@ const VerifyPhoneNumber = ({ navigation, route }: any) => {
                 return;
             }
             const requestModel = { code: OTP, mobileNumber }
-            
+
             const networkRequest: any = await apiFetch.post("users/register/confirm/otp", requestModel);
 
             if (networkRequest.status) {
@@ -88,17 +89,17 @@ const VerifyPhoneNumber = ({ navigation, route }: any) => {
                                 size="large"
                                 color={APP_GREEN}
                             /> : <AnicureButton
-                                    otherStyles={commonStyling.continueButton}
-                                    title="Continue"
-                                    onPress={handleVerifyOTP}
-                                    width={250}
-                                />}
+                                otherStyles={commonStyling.continueButton}
+                                title="Continue"
+                                onPress={handleVerifyOTP}
+                                width={250}
+                            />}
                         </KeyboardAvoidingView>
-                        <AnicureText
+                        {/* <AnicureText
                             text={"Resend Code in 0:20"}
                             type="subTitle"
                             otherStyles={{ marginTop: 20, color: "#1F1742", fontFamily: "Roboto-Medium" }}
-                        />
+                        /> */}
                     </View>
                 </View>
             </ScrollView>

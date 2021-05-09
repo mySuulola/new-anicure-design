@@ -1,5 +1,10 @@
 export const stateAndLocalGovt = [
   {
+    name: 'Select State',
+    value: '',
+    lgas: [],
+  },
+  {
     name: 'Adamawa',
     value: 'adamawa',
     lgas: [
